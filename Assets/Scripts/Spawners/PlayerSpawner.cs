@@ -7,16 +7,18 @@ namespace Spawners
     public class PlayerSpawner : Spawner
     {
         private EventService eventService;
+        private UserDataService userDataService;
 
         [Inject]
-        private void Construct(EventService eventServiceReference)
+        private void Construct(EventService eventServiceReference, UserDataService userDataServiceReference)
         {
             eventService = eventServiceReference;
+            userDataService = userDataServiceReference;
         }
 
-        protected override void Start()
+        private void Start()
         {
-            base.Start();
+            SpawnBodies(userDataService.CurrentUser.StartCrowdCount);
             eventService.GateCollected += SpawnBodies;
         }
 

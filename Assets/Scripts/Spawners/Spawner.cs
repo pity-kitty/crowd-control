@@ -20,11 +20,6 @@ namespace Spawners
         private int amountToSpawn;
         private float minRadius;
         private float maxRadius;
-        
-        protected virtual void Start()
-        {
-            SpawnBodies(1);
-        }
 
         private Vector3 RandomCircle(Vector3 center)
         {

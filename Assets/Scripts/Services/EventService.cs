@@ -1,9 +1,8 @@
 using System;
-using UnityEngine;
 
 namespace Services
 {
-    public class EventService : MonoBehaviour
+    public class EventService
     {
         private Action<int> gateCollected;
         

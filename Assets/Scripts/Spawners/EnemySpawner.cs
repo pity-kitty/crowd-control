@@ -7,7 +7,7 @@ namespace Spawners
     {
         [SerializeField] private int spawnCount = 40;
 
-        protected override void Start()
+        private void Start()
         {
             SpawnBodies(spawnCount);
         }
