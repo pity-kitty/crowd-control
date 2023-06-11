@@ -10,6 +10,10 @@ namespace Player
         private readonly Guid id = Guid.NewGuid();
         private Action<Guid> bodyDestroyed;
 
+        [HideInInspector]
+        public bool CanDie = true;
+        [HideInInspector]
+        public bool CanKill = true;
         public Guid ID => id;
         public Rigidbody Rigidbody => modelRigidbody;
         

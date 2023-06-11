@@ -11,6 +11,7 @@ namespace StateMachine
         public override void EnterState()
         {
             gameStateContext.LevelService.StopMovement();
+            eventService.FightFinished += OnFightFinish;
         }
 
         public override void LeaveState()

@@ -8,6 +8,7 @@ namespace StateMachine
         
         public override void EnterState()
         {
+            gameStateContext.MainUI.ShowUI(true);
             gameStateContext.LevelService.StopMovement();
             gameStateContext.LevelService.ResetLevel();
             gameStateContext.PlayerSpawner.SpawnInitialCrowd();

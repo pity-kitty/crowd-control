@@ -1,41 +1,65 @@
 ﻿using System.Collections;
+using System.Threading.Tasks;
 using Services;
 using Spawners;
 using UnityEngine;
-using Zenject;
 
 namespace Enemy
 {
     public class Fight : MonoBehaviour
     {
-        [SerializeField] private Spawner bodySpawner;
+        private const float TimeToWait = 3f;
 
-        private Coroutine moveRoutine;
-        
-        [Inject] private EventService eventService;
-        
         private Vector3 pointToMove;
 
-        public void StartMoveToPoint(Vector3 point)
+        private EventService eventService;
+        private PlayerSpawner playerSpawner;
+        private EnemySpawner enemySpawner;
+
+        public void SetReferences(EventService eventService, PlayerSpawner playerSpawner, EnemySpawner enemySpawner)
         {
-            pointToMove = point;
-            moveRoutine = StartCoroutine(MoveToPoint());
-            eventService.FightFinished += StopMovement;
+            this.eventService = eventService;
+            this.playerSpawner = playerSpawner;
+            this.enemySpawner = enemySpawner;
+        }
+
+        public void StartFight()
+        {
+            eventService.InvokeFightStarted();
+            var playerBodies = playerSpawner.BodiesCount;
+            var enemyBodies = enemySpawner.BodiesCount;
+            var dieLimit = playerBodies - enemyBodies;
+            if (dieLimit > 0) playerSpawner.BodiesDieLimit = dieLimit;
+            else enemySpawner.BodiesDieLimit = -dieLimit;
+            eventService.PlayerDeathLimitReached += enemySpawner.RestrictKill;
+            StartCoroutine(MoveToPoint());
         }
 
         private IEnumerator MoveToPoint()
         {
-            while (true)
+            var finishTime = Time.time + TimeToWait;
+            while (finishTime > Time.time)
             {
-                bodySpawner.ForceAll(pointToMove);
+                enemySpawner.ForceAll(pointToMove);
                 yield return new WaitForFixedUpdate();
             }
-        }
 
-        private void StopMovement(bool hasPlayerWon)
-        {
-            eventService.FightFinished -= StopMovement;
-            StopCoroutine(moveRoutine);
+            if (enemySpawner.BodiesDieLimit == 0) enemySpawner.DestroyAllBodies();
+            if (playerSpawner.BodiesDieLimit == 0)
+            {
+                playerSpawner.DestroyAllBodies();
+                enemySpawner.DestroyRest();
+                eventService.InvokeFightFinished(false);
+            }
+            else
+            {
+                playerSpawner.DestroyRest();
+                yield return new WaitForFixedUpdate();
+                playerSpawner.ForceAll();
+                eventService.InvokeFightFinished(true);
+            }
+
+            eventService.PlayerDeathLimitReached -= enemySpawner.RestrictKill;
         }
     }
 }

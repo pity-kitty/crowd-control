@@ -37,12 +37,16 @@ namespace UI
         {
             mainUiCanvasGroup.ShowCanvasGroup(false);
             OnGameStarted?.Invoke();
-            //TODO: Change game state to running
         }
 
         private void OnDestroy()
         {
             tapToStartButton.onClick.RemoveListener(StartGame);
+        }
+
+        public void ShowUI(bool state)
+        {
+            mainUiCanvasGroup.ShowCanvasGroup(state);
         }
     }
 }

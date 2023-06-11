@@ -9,6 +9,7 @@ namespace Services
         private Action fightStarted;
         private Action<bool> fightFinished;
         private Action<Vector3> pointOfContactGained;
+        private Action playerDeathLimitReached;
         
         public event Action<int> GateCollected
         {
@@ -33,6 +34,12 @@ namespace Services
             add => pointOfContactGained += value;
             remove => pointOfContactGained -= value;
         }
+        
+        public event Action PlayerDeathLimitReached
+        {
+            add => playerDeathLimitReached += value;
+            remove => playerDeathLimitReached -= value;
+        }
 
         public void InvokeGateCollectedEvent(int gateValue)
         {
@@ -52,6 +59,11 @@ namespace Services
         public void InvokePointOfContactGained(Vector3 point)
         {
             pointOfContactGained?.Invoke(point);
+        }
+
+        public void InvokePlayerDeathLimitReached()
+        {
+            playerDeathLimitReached?.Invoke();
         }
     }
 }

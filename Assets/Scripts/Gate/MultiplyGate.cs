@@ -12,6 +12,7 @@ namespace Gate
         [SerializeField] private GateParameters gateParameters;
         [SerializeField] private TMP_Text valueText;
 
+        private bool onceEntered;
         private Dictionary<MultiplyType, char> multiplyCharacter = new Dictionary<MultiplyType, char>()
         {
             { MultiplyType.Addition, '+' },
@@ -34,6 +35,8 @@ namespace Gate
 
         private void OnTriggerEnter(Collider other)
         {
+            if (onceEntered) return;
+            onceEntered = true;
             eventService.InvokeGateCollectedEvent(gateParameters.Value);
             Destroy(gameObject);
         }

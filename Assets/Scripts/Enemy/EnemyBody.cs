@@ -10,8 +10,8 @@ namespace Enemy
         private void OnCollisionEnter(Collision other)
         {
             if (other.gameObject.layer != playerLayer) return;
-            Destroy(other.gameObject);
-            Destroy(gameObject);
+            if (CanKill) Destroy(other.gameObject);
+            if (CanDie) Destroy(gameObject);
         }
     }
 }

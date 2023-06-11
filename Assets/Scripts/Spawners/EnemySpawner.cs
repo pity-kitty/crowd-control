@@ -1,5 +1,7 @@
 using System;
+using Enemy;
 using UnityEngine;
+using Zenject;
 
 namespace Spawners
 {
@@ -12,6 +14,8 @@ namespace Spawners
 
         private bool contacted;
 
+        [Inject] private PlayerSpawner playerSpawner;
+
         private void Start()
         {
             SpawnBodies(spawnCount);
@@ -20,7 +24,8 @@ namespace Spawners
         protected override void RemoveBodyFromList(Guid guid)
         {
             base.RemoveBodyFromList(guid);
-            if (BodiesCount == 0) EventServiceReference.InvokeFightFinished(true);
+            if (BodiesCount == 0) HideCounter();
+            if (BodiesCount == BodiesDieLimit) RestrictDeath();
         }
 
         private void OnCollisionEnter(Collision other)
@@ -29,13 +34,10 @@ namespace Spawners
             contacted = true;
             triggerCollider.enabled = false;
             crowdRigidbody.velocity = Vector3.zero;
-            crowdRigidbody.angularVelocity = Vector3.zero; 
-            var pointOfContact = other.contacts[0].point;
-            pointOfContact.y = 0;
-            pointOfContact.z -= 2f;
-            Fight.StartMoveToPoint(pointOfContact);
-            EventServiceReference.InvokePointOfContactGained(transform.position);
-            EventServiceReference.InvokeFightStarted();
+            crowdRigidbody.angularVelocity = Vector3.zero;
+            var fight = gameObject.AddComponent(typeof(Fight)) as Fight;
+            fight.SetReferences(EventServiceReference, playerSpawner, this);
+            fight.StartFight();
         }
     }
 }
