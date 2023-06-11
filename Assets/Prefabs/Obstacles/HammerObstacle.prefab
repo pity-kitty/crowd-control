@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3277746237883984676}
-  - component: {fileID: 1947625057323017235}
   m_Layer: 10
   m_Name: HammerObstacle
   m_TagString: Untagged
@@ -37,18 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1947625057323017235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1448815558894217937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696687148bae42de9f2c900eb92f32fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3308625834453249104
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +243,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8469450134987462525}
     m_Modifications:
+    - target: {fileID: 1287337084931225702, guid: 03ef2808932d909489163e60772035f6,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4697285095855125816, guid: 03ef2808932d909489163e60772035f6,
         type: 3}
       propertyPath: m_RootOrder
@@ -333,6 +325,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03ef2808932d909489163e60772035f6, type: 3}
+--- !u!1 &7842801317440917475 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4701093443601437142, guid: 03ef2808932d909489163e60772035f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 3308625834159382069}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7125712357363704980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7842801317440917475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696687148bae42de9f2c900eb92f32fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7843724924638096141 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4697285095855125816, guid: 03ef2808932d909489163e60772035f6,

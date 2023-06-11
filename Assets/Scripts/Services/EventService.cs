@@ -9,7 +9,10 @@ namespace Services
         private Action<bool> fightFinished;
         private Action playerDeathLimitReached;
         private Action playerLost;
-        
+        private Action<float> radiusRecalculated;
+        private Action tryAgainPressed;
+        private Action nextLevelPressed;
+
         public event Action<int> GateCollected
         {
             add => gateCollected += value;
@@ -39,6 +42,24 @@ namespace Services
             add => playerLost += value;
             remove => playerLost -= value;
         }
+        
+        public event Action<float> RadiusRecalculated
+        {
+            add => radiusRecalculated += value;
+            remove => radiusRecalculated -= value;
+        }
+        
+        public event Action TryAgainPressed
+        {
+            add => tryAgainPressed += value;
+            remove => tryAgainPressed -= value;
+        }
+        
+        public event Action NextLevelPressed
+        {
+            add => nextLevelPressed += value;
+            remove => nextLevelPressed -= value;
+        }
 
         public void InvokeGateCollectedEvent(int gateValue)
         {
@@ -63,6 +84,21 @@ namespace Services
         public void InvokePlayerLost()
         {
             playerLost?.Invoke();
+        }
+
+        public void InvokeRadiusRecalculated(float maxRadius)
+        {
+            radiusRecalculated?.Invoke(maxRadius);
+        }
+
+        public void InvokeTryAgainPressed()
+        {
+            tryAgainPressed?.Invoke();
+        }
+
+        public void InvokeNextLevelPressed()
+        {
+            nextLevelPressed?.Invoke();
         }
     }
 }

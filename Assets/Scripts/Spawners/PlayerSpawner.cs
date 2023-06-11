@@ -21,6 +21,12 @@ namespace Spawners
             SpawnBodies(userDataService.CurrentUser.StartCrowdCount);
         }
 
+        protected override void CalculateRadii()
+        {
+            base.CalculateRadii();
+            EventServiceReference.InvokeRadiusRecalculated(MaxRadius);
+        }
+
         protected override void RemoveBodyFromList(Guid guid)
         {
             base.RemoveBodyFromList(guid);

@@ -1,14 +1,28 @@
+using Level;
+using Player;
 using Services;
+using UI;
 
 namespace StateMachine
 {
     public class RunningState : BaseGameState
     {
-        public RunningState(GameStateContext gameStateContext, EventService eventService) : base(gameStateContext, eventService) { }
+        private readonly LevelService levelService;
+        private readonly PlayerControl playerControl;
+        private readonly EndScreenUI endScreenUI;
+
+        public RunningState(GameStateContext gameStateContext, EventService eventService, LevelService levelService, 
+            PlayerControl playerControl, EndScreenUI endScreenUI) : base(gameStateContext, eventService)
+        {
+            this.levelService = levelService;
+            this.playerControl = playerControl;
+            this.endScreenUI = endScreenUI;
+        }
         
         public override void EnterState()
         {
-            gameStateContext.LevelService.StartLevelMovement();
+            playerControl.EnableControl(true);
+            levelService.StartLevelMovement();
             eventService.FightStarted += LeaveState;
             eventService.PlayerLost += PlayerLost;
         }
@@ -24,7 +38,8 @@ namespace StateMachine
         {
             eventService.FightStarted -= LeaveState;
             eventService.PlayerLost -= PlayerLost;
-            gameStateContext.SwitchState(gameStateContext.MainMenuState);
+            endScreenUI.ShowGameOverScreen(true);
+            gameStateContext.SwitchState(gameStateContext.EndState);
         }
     }
 }

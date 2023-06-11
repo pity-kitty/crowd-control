@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8555996791476419113}
   - component: {fileID: 8555996791476419094}
+  - component: {fileID: 6267284085765053936}
   m_Layer: 6
   m_Name: PlayerCrowd
   m_TagString: Untagged
@@ -50,6 +51,21 @@ MonoBehaviour:
   counterCanvasGroup: {fileID: 5334717059282911333}
   crowdCountText: {fileID: 6704416652441550091}
   BodiesDieLimit: 0
+--- !u!114 &6267284085765053936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8555996791476419112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7adfb9961484f9297fc2b1c342784ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivity: 0.3
+  leftXBoundary: -11
+  rightXBoundary: 11
 --- !u!1001 &1733040240879360672
 PrefabInstance:
   m_ObjectHideFlags: 0

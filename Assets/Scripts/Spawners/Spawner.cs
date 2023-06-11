@@ -28,27 +28,32 @@ namespace Spawners
         {
             eventService = eventServiceReference;
         }
-
-        [HideInInspector]
-        public int BodiesDieLimit = 0;
-        protected EventService EventServiceReference => eventService;
-        public int BodiesCount => bodies.Count;
         
         private int amountToSpawn;
         private float minRadius;
         private float maxRadius;
 
+        [HideInInspector]
+        public int BodiesDieLimit = 0;
+        public int BodiesCount => bodies.Count;
+        protected EventService EventServiceReference => eventService;
+        protected float MaxRadius => maxRadius;
+
         private Vector3 RandomCircle(Vector3 center)
         {
             var angle = Random.value * 360;
-            minRadius = CalculateCrowdRadius(bodies.Count);
-            maxRadius = minRadius + CalculateCrowdRadius(amountToSpawn);
             var radius = Random.Range(minRadius, maxRadius);
             Vector3 spawnPosition;
             spawnPosition.x = center.x + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
             spawnPosition.y = center.y;
             spawnPosition.z = center.z + radius * Mathf.Cos(angle * Mathf.Deg2Rad);
             return spawnPosition;
+        }
+
+        protected virtual void CalculateRadii()
+        {
+            minRadius = CalculateCrowdRadius(bodies.Count);
+            maxRadius = minRadius + CalculateCrowdRadius(amountToSpawn);
         }
 
         private float CalculateCrowdRadius(int bodiesCount)
@@ -85,6 +90,7 @@ namespace Spawners
             await Task.Yield();
             var spawnerTransform = transform;
             var center = spawnerTransform.position;
+            CalculateRadii();
             for (var i = 0; i < amountToSpawn; i++)
             {
                 var spawnPosition = RandomCircle(center);
