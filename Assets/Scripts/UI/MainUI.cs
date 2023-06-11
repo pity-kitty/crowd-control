@@ -15,6 +15,8 @@ namespace UI
 
         private UserDataService userDataService;
 
+        public event Action OnGameStarted;
+
         [Inject]
         private void Construct(UserDataService userDataServiceReference)
         {
@@ -34,6 +36,7 @@ namespace UI
         private void StartGame()
         {
             mainUiCanvasGroup.ShowCanvasGroup(false);
+            OnGameStarted?.Invoke();
             //TODO: Change game state to running
         }
 

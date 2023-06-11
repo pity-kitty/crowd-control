@@ -1,36 +1,40 @@
 using System;
 using Services;
+using UnityEngine;
 using Zenject;
 
 namespace Spawners
 {
     public class PlayerSpawner : Spawner
     {
-        private EventService eventService;
-        private UserDataService userDataService;
-
-        [Inject]
-        private void Construct(EventService eventServiceReference, UserDataService userDataServiceReference)
-        {
-            eventService = eventServiceReference;
-            userDataService = userDataServiceReference;
-        }
+        [Inject] private UserDataService userDataService;
 
         private void Start()
         {
+            EventServiceReference.GateCollected += SpawnBodies;
+            EventServiceReference.PointOfContactGained += ReceivePointOfContact;
+        }
+
+        public void SpawnInitialCrowd()
+        {
             SpawnBodies(userDataService.CurrentUser.StartCrowdCount);
-            eventService.GateCollected += SpawnBodies;
         }
 
         protected override void RemoveBodyFromList(Guid guid)
         {
             base.RemoveBodyFromList(guid);
-            //TODO: if count is 0 end the game
+            if (BodiesCount == 0) EventServiceReference.InvokeFightFinished(false);
+        }
+
+        private void ReceivePointOfContact(Vector3 point)
+        {
+            Fight.StartMoveToPoint(point);
         }
 
         private void OnDestroy()
         {
-            eventService.GateCollected -= SpawnBodies;
+            EventServiceReference.GateCollected -= SpawnBodies;
+            EventServiceReference.PointOfContactGained -= ReceivePointOfContact;
         }
     }
 }

@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Enemy;
 using Player;
+using Services;
 using TMPro;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace Spawners
@@ -14,8 +17,22 @@ namespace Spawners
         
         [SerializeField] private Body bodyPrefab;
         [SerializeField] private TMP_Text crowdCountText;
+        [SerializeField] private Fight fight;
 
-        protected Dictionary<Guid, Rigidbody> rigidbodies = new();
+
+        private Dictionary<Guid, Rigidbody> rigidbodies = new();
+        
+        private EventService eventService;
+
+        [Inject]
+        protected void Construct(EventService eventServiceReference)
+        {
+            eventService = eventServiceReference;
+        }
+
+        protected EventService EventServiceReference => eventService;
+        protected Fight Fight => fight;
+        protected int BodiesCount => rigidbodies.Count;
         
         private int amountToSpawn;
         private float minRadius;
@@ -41,13 +58,22 @@ namespace Spawners
 
         private void ForceAll()
         {
-            foreach (var cubeRigidbody in rigidbodies.Values)
+            foreach (var rigidbody in rigidbodies.Values)
             {
-                var direction = transform.position - cubeRigidbody.position;
-                cubeRigidbody.AddForce(direction, ForceMode.Impulse);
+                var direction = transform.position - rigidbody.position;
+                rigidbody.AddForce(direction * 1, ForceMode.Impulse);
             }
         }
-        
+
+        public void ForceAll(Vector3 position)
+        {
+            foreach (var rigidbody in rigidbodies.Values)
+            {
+                var direction = position - rigidbody.position;
+                rigidbody.AddForce(direction * 1);
+            }
+        }
+
         protected void SpawnBodies(int spawnCount)
         {
             amountToSpawn = spawnCount;

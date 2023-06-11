@@ -26,7 +26,7 @@ namespace Level
 
         public void StopMovement()
         {
-            StopCoroutine(moveRoutine);
+            if (moveRoutine != null) StopCoroutine(moveRoutine);
         }
 
         public void ResetLevel()
