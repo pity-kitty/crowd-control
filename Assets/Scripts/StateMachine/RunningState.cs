@@ -10,13 +10,21 @@ namespace StateMachine
         {
             gameStateContext.LevelService.StartLevelMovement();
             eventService.FightStarted += LeaveState;
+            eventService.PlayerLost += PlayerLost;
         }
 
         public override void LeaveState()
         {
             eventService.FightStarted -= LeaveState;
+            eventService.PlayerLost -= PlayerLost;
             gameStateContext.SwitchState(gameStateContext.FightingState);
         }
 
+        private void PlayerLost()
+        {
+            eventService.FightStarted -= LeaveState;
+            eventService.PlayerLost -= PlayerLost;
+            gameStateContext.SwitchState(gameStateContext.MainMenuState);
+        }
     }
 }

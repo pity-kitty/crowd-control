@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Services
 {
@@ -8,8 +7,8 @@ namespace Services
         private Action<int> gateCollected;
         private Action fightStarted;
         private Action<bool> fightFinished;
-        private Action<Vector3> pointOfContactGained;
         private Action playerDeathLimitReached;
+        private Action playerLost;
         
         public event Action<int> GateCollected
         {
@@ -29,16 +28,16 @@ namespace Services
             remove => fightFinished -= value;
         }
         
-        public event Action<Vector3> PointOfContactGained
-        {
-            add => pointOfContactGained += value;
-            remove => pointOfContactGained -= value;
-        }
-        
         public event Action PlayerDeathLimitReached
         {
             add => playerDeathLimitReached += value;
             remove => playerDeathLimitReached -= value;
+        }
+        
+        public event Action PlayerLost
+        {
+            add => playerLost += value;
+            remove => playerLost -= value;
         }
 
         public void InvokeGateCollectedEvent(int gateValue)
@@ -56,14 +55,14 @@ namespace Services
             fightFinished?.Invoke(hasPlayerWon);
         }
 
-        public void InvokePointOfContactGained(Vector3 point)
-        {
-            pointOfContactGained?.Invoke(point);
-        }
-
         public void InvokePlayerDeathLimitReached()
         {
             playerDeathLimitReached?.Invoke();
+        }
+
+        public void InvokePlayerLost()
+        {
+            playerLost?.Invoke();
         }
     }
 }
