@@ -120,9 +120,9 @@ namespace Spawners
             }
         }
 
-        protected void HideCounter()
+        protected void ShowCounter(bool state)
         {
-            counterCanvasGroup.ShowCanvasGroup(false);
+            counterCanvasGroup.ShowCanvasGroup(state);
         }
 
         public void RestrictKill()

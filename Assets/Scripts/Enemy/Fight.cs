@@ -27,6 +27,7 @@ namespace Enemy
         {
             eventService.InvokeFightStarted();
             enemySpawner.SetAnimationForAllBodies(PlayerAnimation.Running);
+            pointToMove = playerSpawner.SpawnerPosition;
             var playerBodies = playerSpawner.BodiesCount;
             var enemyBodies = enemySpawner.BodiesCount;
             var dieLimit = playerBodies - enemyBodies;

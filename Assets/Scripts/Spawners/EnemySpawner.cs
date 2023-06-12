@@ -24,7 +24,7 @@ namespace Spawners
         protected override void RemoveBodyFromList(Guid guid)
         {
             base.RemoveBodyFromList(guid);
-            if (BodiesCount == 0) HideCounter();
+            if (BodiesCount == 0) ShowCounter(false);
             if (BodiesCount == BodiesDieLimit) RestrictDeath();
         }
 

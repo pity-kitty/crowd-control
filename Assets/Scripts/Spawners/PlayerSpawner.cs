@@ -1,6 +1,7 @@
 using System;
 using Gate;
 using Services;
+using UnityEngine;
 using Zenject;
 
 namespace Spawners
@@ -9,6 +10,8 @@ namespace Spawners
     {
         [Inject] private UserDataService userDataService;
 
+        public Vector3 SpawnerPosition => transform.position;
+
         private void Start()
         {
             EventServiceReference.GateCollected += GateCollected;
@@ -16,6 +19,7 @@ namespace Spawners
 
         public void SpawnInitialCrowd()
         {
+            ShowCounter(true);
             SpawnBodies(userDataService.CurrentUser.StartCrowdCount, false);
         }
 
@@ -45,7 +49,7 @@ namespace Spawners
             base.RemoveBodyFromList(guid);
             if (BodiesCount == 0)
             {
-                HideCounter();
+                ShowCounter(false);
                 EventServiceReference.InvokePlayerLost();
             }
             if (BodiesCount == BodiesDieLimit) EventServiceReference.InvokePlayerDeathLimitReached();

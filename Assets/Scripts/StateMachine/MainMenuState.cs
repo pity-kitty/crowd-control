@@ -10,6 +10,7 @@ namespace StateMachine
         {
             gameStateContext.EndScreenUI.ShowEndScreen(false);
             gameStateContext.MainUI.ShowUI(true);
+            gameStateContext.PlayerControl.ResetPosition();
             gameStateContext.PlayerControl.EnableControl(false);
             gameStateContext.LevelService.StopMovement();
             gameStateContext.LevelService.ResetLevel();

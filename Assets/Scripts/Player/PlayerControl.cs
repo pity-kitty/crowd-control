@@ -40,6 +40,11 @@ namespace Player
             
             if (controlRoutine != null) StopCoroutine(controlRoutine);
         }
+
+        public void ResetPosition()
+        {
+            transform.position = Vector3.zero;
+        }
         
         private IEnumerator ControlPlayer()
         {

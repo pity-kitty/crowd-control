@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8052355728576927962}
-  - component: {fileID: 3907832120858332767}
   m_Layer: 7
   m_Name: SoloGate
   m_TagString: Untagged
@@ -35,22 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3907832120858332767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7258245819938572705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb92e7bc33314b31bceaf2988ebb38d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  multiplyType: 0
-  multiplyValue: 0
-  valueText: {fileID: 7116098998152246557}
-  fieldCollider: {fileID: 8261742439048447801}
 --- !u!1001 &2336911908753918190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -270,6 +253,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc69c76080ad54f4fa57a7e6cad0cd74, type: 3}
+--- !u!1 &3059570817840007230 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6828461133417887654, guid: fc69c76080ad54f4fa57a7e6cad0cd74,
+    type: 3}
+  m_PrefabInstance: {fileID: 8410004230146785176}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8650433511096195587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059570817840007230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb92e7bc33314b31bceaf2988ebb38d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  multiplyType: 0
+  multiplyValue: 50
+  valueText: {fileID: 7116098998152246557}
+  fieldCollider: {fileID: 8261742439048447801}
 --- !u!4 &5483223214883283168 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4084206569462783864, guid: fc69c76080ad54f4fa57a7e6cad0cd74,
