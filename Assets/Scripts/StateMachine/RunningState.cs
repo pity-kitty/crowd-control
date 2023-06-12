@@ -32,6 +32,7 @@ namespace StateMachine
             eventService.PlayerLost -= PlayerLost;
             eventService.PlayerWon -= PlayerWon;
             gameStateContext.EndScreenUI.ShowGameOverScreen(true);
+            gameStateContext.Wallet.ShowIncome(true);
             gameStateContext.SwitchState(gameStateContext.EndState);
         }
 
@@ -43,6 +44,7 @@ namespace StateMachine
             gameStateContext.PlayerSpawner.SetAnimationForAllBodies(PlayerAnimation.Cheering);
             gameStateContext.EndScreenUI.ShowVictoryScreen(true);
             gameStateContext.LevelService.GoToNextLevel();
+            gameStateContext.Wallet.ShowIncome(true);
             gameStateContext.SwitchState(gameStateContext.EndState);
         }
     }

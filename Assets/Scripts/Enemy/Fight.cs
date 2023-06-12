@@ -11,6 +11,7 @@ namespace Enemy
         private const float TimeToWait = 3f;
 
         private Vector3 pointToMove;
+        private int income;
 
         private EventService eventService;
         private PlayerSpawner playerSpawner;
@@ -31,8 +32,16 @@ namespace Enemy
             var playerBodies = playerSpawner.BodiesCount;
             var enemyBodies = enemySpawner.BodiesCount;
             var dieLimit = playerBodies - enemyBodies;
-            if (dieLimit > 0) playerSpawner.BodiesDieLimit = dieLimit;
-            else enemySpawner.BodiesDieLimit = -dieLimit;
+            if (dieLimit > 0)
+            {
+                playerSpawner.BodiesDieLimit = dieLimit;
+                income = enemyBodies;
+            }
+            else
+            {
+                enemySpawner.BodiesDieLimit = -dieLimit;
+                income = playerBodies;
+            }
             eventService.PlayerDeathLimitReached += enemySpawner.RestrictKill;
             StartCoroutine(MoveToPoint());
         }
@@ -47,6 +56,7 @@ namespace Enemy
             }
 
             if (enemySpawner.BodiesDieLimit == 0) enemySpawner.DestroyAllBodies();
+            eventService.InvokeMoneyGained(income);
             if (playerSpawner.BodiesDieLimit == 0)
             {
                 playerSpawner.DestroyAllBodies();

@@ -15,6 +15,7 @@ namespace StateMachine
         [SerializeField] private LevelService levelService;
         [SerializeField] private PlayerControl playerControl;
         [SerializeField] private EndScreenUI endScreenUI;
+        [SerializeField] private Wallet wallet;
         
         private BaseGameState currentState;
 
@@ -23,6 +24,7 @@ namespace StateMachine
         public LevelService LevelService => levelService;
         public PlayerControl PlayerControl => playerControl;
         public EndScreenUI EndScreenUI => endScreenUI;
+        public Wallet Wallet => wallet;
 
         private EventService eventService;
 

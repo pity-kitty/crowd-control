@@ -24,6 +24,7 @@ namespace StateMachine
                 return;
             }
             
+            gameStateContext.Wallet.ShowIncome(true);
             gameStateContext.EndScreenUI.ShowGameOverScreen(true);
             gameStateContext.SwitchState(gameStateContext.EndState);
         }
