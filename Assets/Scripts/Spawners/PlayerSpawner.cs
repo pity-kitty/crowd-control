@@ -20,7 +20,6 @@ namespace Spawners
         public void SpawnInitialCrowd()
         {
             DestroyAllBodies();
-            ShowCounter(true);
             SpawnBodies(userDataService.CurrentUser.StartCrowdCount, false);
         }
 

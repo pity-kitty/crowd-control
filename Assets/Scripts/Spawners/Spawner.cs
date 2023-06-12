@@ -104,6 +104,7 @@ namespace Spawners
             crowdCountText.text = bodies.Count.ToString();
             await Task.Yield();
             ForceAll();
+            ShowCounter(true);
         }
 
         protected virtual void RemoveBodyFromList(Guid guid)
