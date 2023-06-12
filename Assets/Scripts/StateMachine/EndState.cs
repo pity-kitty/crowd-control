@@ -9,6 +9,7 @@ namespace StateMachine
         public override void EnterState()
         {
             gameStateContext.LevelService.StopMovement();
+            gameStateContext.PlayerControl.EnableControl(false);
             gameStateContext.EndScreenUI.ShowEndScreen(true);
             eventService.TryAgainPressed += LeaveState;
             eventService.NextLevelPressed += LoadNextLevel;
@@ -25,7 +26,6 @@ namespace StateMachine
         {
             eventService.TryAgainPressed -= LeaveState;
             eventService.NextLevelPressed -= LoadNextLevel;
-            gameStateContext.LevelService.GoToNextLevel();
             gameStateContext.SwitchState(gameStateContext.MainMenuState);
         }
     }

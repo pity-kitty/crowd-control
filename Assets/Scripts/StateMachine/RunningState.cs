@@ -5,13 +5,8 @@ namespace StateMachine
 {
     public class RunningState : BaseGameState
     {
-        private readonly UserDataService userDataService;
 
-        public RunningState(GameStateContext gameStateContext, EventService eventService, UserDataService userDataService) 
-            : base(gameStateContext, eventService)
-        {
-            this.userDataService = userDataService;
-        }
+        public RunningState(GameStateContext gameStateContext, EventService eventService) : base(gameStateContext, eventService) { }
         
         public override void EnterState()
         {
@@ -47,8 +42,7 @@ namespace StateMachine
             eventService.PlayerWon -= PlayerWon;
             gameStateContext.PlayerSpawner.SetAnimationForAllBodies(PlayerAnimation.Cheering);
             gameStateContext.EndScreenUI.ShowVictoryScreen(true);
-            userDataService.CurrentUser.Level++;
-            userDataService.SaveUserData();
+            gameStateContext.LevelService.GoToNextLevel();
             gameStateContext.SwitchState(gameStateContext.EndState);
         }
     }

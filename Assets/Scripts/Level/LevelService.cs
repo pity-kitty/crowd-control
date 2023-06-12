@@ -67,6 +67,7 @@ namespace Level
         public void GoToNextLevel()
         {
             currentIndex++;
+            currentIndex = Mathf.Min(currentIndex, levels.Count - 1);
         }
     }
 }
