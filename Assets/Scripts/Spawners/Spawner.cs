@@ -99,7 +99,7 @@ namespace Spawners
                 bodies.Add(spawnedBody.ID, spawnedBody);
                 if (needAnimate) spawnedBody.SetRunningAnimation();
                 spawnedBody.BodyDestroyed += RemoveBodyFromList;
-                await Task.Delay(1);
+                await Task.Yield();
             }
             crowdCountText.text = bodies.Count.ToString();
             await Task.Yield();
