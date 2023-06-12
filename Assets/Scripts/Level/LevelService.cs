@@ -8,6 +8,8 @@ namespace Level
 {
     public class LevelService : MonoBehaviour
     {
+        private const int TargetFrameRate = 60;
+        
         [SerializeField] private float moveSpeed = 10f;
         [SerializeField] private List<GameObject> levels;
 
@@ -29,6 +31,9 @@ namespace Level
         {
             currentIndex = userDataService.CurrentUser.Level;
             SpawnLevel(currentIndex);
+            
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = TargetFrameRate;
         }
 
         private IEnumerator MoveLevel()
