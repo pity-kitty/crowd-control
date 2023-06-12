@@ -18,7 +18,7 @@ namespace Spawners
 
         public void SpawnInitialCrowd()
         {
-            SpawnBodies(userDataService.CurrentUser.StartCrowdCount);
+            SpawnBodies(userDataService.CurrentUser.StartCrowdCount, false);
         }
 
         protected override void CalculateRadii()

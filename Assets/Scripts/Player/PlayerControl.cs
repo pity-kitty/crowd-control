@@ -15,6 +15,7 @@ namespace Player
 
         private Coroutine controlRoutine;
         private float offset;
+        private float initialXPosition;
 
         private EventService eventService;
 
@@ -44,16 +45,32 @@ namespace Player
         {
             while (true)
             {
+#if UNITY_EDITOR
+                if (Input.GetMouseButtonDown(0)) initialXPosition = Input.mousePosition.x;
+                if (Input.GetMouseButton(0))
+                {
+                    var currentXPosition = Input.mousePosition.x;
+                    var delta = currentXPosition - initialXPosition;
+                    CalculatePosition(delta);
+                    initialXPosition = currentXPosition;
+                }
+#endif
+                
                 if (Input.touches.Length > 0)
                 {
-                    var position = transform.position;
-                    position.x += Input.touches[0].deltaPosition.x * Time.deltaTime * sensitivity;
-                    position.x = Mathf.Clamp(position.x, leftXBoundary + offset, rightXBoundary - offset);
-                    transform.position = position;
+                    CalculatePosition(Input.touches[0].deltaPosition.x);
                 }
 
                 yield return null;
             }
+        }
+
+        private void CalculatePosition(float deltaPosition)
+        {
+            var position = transform.position;
+            position.x += deltaPosition * Time.deltaTime * sensitivity;
+            position.x = Mathf.Clamp(position.x, leftXBoundary + offset, rightXBoundary - offset);
+            transform.position = position;
         }
 
         private void SetNewOffset(float newOffset)

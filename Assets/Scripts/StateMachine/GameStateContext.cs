@@ -15,9 +15,15 @@ namespace StateMachine
         [SerializeField] private LevelService levelService;
         [SerializeField] private PlayerControl playerControl;
         [SerializeField] private EndScreenUI endScreenUI;
-
+        
         private BaseGameState currentState;
 
+        public MainUI MainUI => mainUI;
+        public PlayerSpawner PlayerSpawner => playerSpawner;
+        public LevelService LevelService => levelService;
+        public PlayerControl PlayerControl => playerControl;
+        public EndScreenUI EndScreenUI => endScreenUI;
+        
         private EventService eventService;
 
         [Inject]
@@ -33,10 +39,10 @@ namespace StateMachine
 
         private void Awake()
         {
-            MainMenuState = new MainMenuState(this, eventService, mainUI, levelService, playerSpawner, playerControl, endScreenUI);
-            RunningState = new RunningState(this, eventService, levelService, playerControl, endScreenUI);
-            FightingState = new FightingState(this, eventService, levelService, playerControl, endScreenUI);
-            EndState = new EndState(this, eventService, levelService, endScreenUI);
+            MainMenuState = new MainMenuState(this, eventService);
+            RunningState = new RunningState(this, eventService);
+            FightingState = new FightingState(this, eventService);
+            EndState = new EndState(this, eventService);
         }
 
         private void Start()

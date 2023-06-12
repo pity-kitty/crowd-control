@@ -76,16 +76,17 @@ namespace Spawners
             {
                 var direction = position - body.Rigidbody.position;
                 body.Rigidbody.AddForce(direction);
+                body.SetRunningAnimation();
             }
         }
 
-        protected void SpawnBodies(int spawnCount)
+        protected void SpawnBodies(int spawnCount, bool needAnimate)
         {
             amountToSpawn = spawnCount;
-            SpawnRoutine();
+            SpawnRoutine(needAnimate);
         }
 
-        private async void SpawnRoutine()
+        private async void SpawnRoutine(bool needAnimate)
         {
             await Task.Yield();
             var spawnerTransform = transform;
@@ -96,6 +97,7 @@ namespace Spawners
                 var spawnPosition = RandomCircle(center);
                 var spawnedBody = Instantiate(bodyPrefab, spawnPosition, spawnerTransform.rotation, spawnerTransform);
                 bodies.Add(spawnedBody.ID, spawnedBody);
+                if (needAnimate) spawnedBody.SetRunningAnimation();
                 spawnedBody.BodyDestroyed += RemoveBodyFromList;
                 await Task.Delay(1);
             }
@@ -148,6 +150,14 @@ namespace Spawners
                 Destroy(body.gameObject);
                 destroyedCount++;
                 if (destroyedCount == countToDestroy) break;
+            }
+        }
+
+        public void SetAnimationForAllBodies(PlayerAnimation playerAnimation)
+        {
+            foreach (var body in bodies.Values)
+            {
+                body.SetAnimation(playerAnimation);
             }
         }
     }

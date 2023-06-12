@@ -1,25 +1,15 @@
-﻿using Level;
-using Services;
-using UI;
+﻿using Services;
 
 namespace StateMachine
 {
     public class EndState : BaseGameState
     {
-        private readonly EndScreenUI endScreenUI;
-        private readonly LevelService levelService;
-
-        public EndState(GameStateContext gameStateContext, EventService eventService, LevelService levelService, EndScreenUI endScreenUI)
-            : base(gameStateContext, eventService)
-        {
-            this.endScreenUI = endScreenUI;
-            this.levelService = levelService;
-        }
+        public EndState(GameStateContext gameStateContext, EventService eventService) : base(gameStateContext, eventService) { }
 
         public override void EnterState()
         {
-            levelService.StopMovement();
-            endScreenUI.ShowEndScreen(true);
+            gameStateContext.LevelService.StopMovement();
+            gameStateContext.EndScreenUI.ShowEndScreen(true);
             eventService.TryAgainPressed += LeaveState;
             eventService.NextLevelPressed += LoadNextLevel;
         }

@@ -18,7 +18,7 @@ namespace Spawners
 
         private void Start()
         {
-            SpawnBodies(spawnCount);
+            SpawnBodies(spawnCount, false);
         }
 
         protected override void RemoveBodyFromList(Guid guid)

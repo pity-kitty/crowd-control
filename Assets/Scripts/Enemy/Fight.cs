@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Threading.Tasks;
+using Player;
 using Services;
 using Spawners;
 using UnityEngine;
@@ -26,6 +26,7 @@ namespace Enemy
         public void StartFight()
         {
             eventService.InvokeFightStarted();
+            enemySpawner.SetAnimationForAllBodies(PlayerAnimation.Running);
             var playerBodies = playerSpawner.BodiesCount;
             var enemyBodies = enemySpawner.BodiesCount;
             var dieLimit = playerBodies - enemyBodies;

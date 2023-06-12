@@ -82,7 +82,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modelRigidbody: {fileID: -3209119744138018022}
-  enemyLayer: 8
+  bodyAnimator: {fileID: 6640601484063307330}
+  CanDie: 1
+  CanKill: 1
 --- !u!95 &6640601484063307330
 Animator:
   serializedVersion: 5

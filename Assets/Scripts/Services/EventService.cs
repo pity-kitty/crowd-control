@@ -4,7 +4,7 @@ namespace Services
 {
     public class EventService
     {
-        private Action<int> gateCollected;
+        private Action<int, bool> gateCollected;
         private Action fightStarted;
         private Action<bool> fightFinished;
         private Action playerDeathLimitReached;
@@ -13,7 +13,7 @@ namespace Services
         private Action tryAgainPressed;
         private Action nextLevelPressed;
 
-        public event Action<int> GateCollected
+        public event Action<int, bool> GateCollected
         {
             add => gateCollected += value;
             remove => gateCollected -= value;
@@ -63,7 +63,7 @@ namespace Services
 
         public void InvokeGateCollectedEvent(int gateValue)
         {
-            gateCollected?.Invoke(gateValue);
+            gateCollected?.Invoke(gateValue, true);
         }
         
         public void InvokeFightStarted()
