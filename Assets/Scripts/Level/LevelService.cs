@@ -68,6 +68,8 @@ namespace Level
         {
             currentIndex++;
             currentIndex = Mathf.Min(currentIndex, levels.Count - 1);
+            userDataService.CurrentUser.Level = currentIndex;
+            userDataService.SaveUserData();
         }
     }
 }
