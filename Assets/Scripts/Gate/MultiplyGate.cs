@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Services;
 using TMPro;
@@ -9,10 +8,13 @@ namespace Gate
 {
     public class MultiplyGate : MonoBehaviour
     {
-        [SerializeField] private GateParameters gateParameters;
+        [SerializeField] private MultiplyType multiplyType;
+        [SerializeField] private int multiplyValue;
         [SerializeField] private TMP_Text valueText;
+        [SerializeField] private Collider fieldCollider;
 
         private bool onceEntered;
+
         private Dictionary<MultiplyType, char> multiplyCharacter = new Dictionary<MultiplyType, char>()
         {
             { MultiplyType.Addition, '+' },
@@ -20,6 +22,9 @@ namespace Gate
         };
 
         private EventService eventService;
+
+        public Collider FieldCollider => fieldCollider;
+        public bool OnceEntered => onceEntered;
 
         [Inject]
         private void Construct(EventService eventServiceReference)
@@ -29,15 +34,15 @@ namespace Gate
 
         private void Start()
         {
-            var multiplyText = multiplyCharacter[gateParameters.MultiplyType] + gateParameters.Value.ToString();
+            var multiplyText = multiplyCharacter[multiplyType] + multiplyValue.ToString();
             valueText.text = multiplyText;
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             if (onceEntered) return;
             onceEntered = true;
-            eventService.InvokeGateCollectedEvent(gateParameters.Value);
+            eventService.InvokeGateCollectedEvent(multiplyType, multiplyValue);
             Destroy(gameObject);
         }
     }

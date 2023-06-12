@@ -47,8 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb92e7bc33314b31bceaf2988ebb38d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gateParameters: {fileID: 0}
+  multiplyType: 0
+  multiplyValue: 0
   valueText: {fileID: 7116098998152246557}
+  fieldCollider: {fileID: 8261742439048447801}
 --- !u!1001 &2336911908753918190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,3 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &8261742439048447801 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 437355711227164833, guid: fc69c76080ad54f4fa57a7e6cad0cd74,
+    type: 3}
+  m_PrefabInstance: {fileID: 8410004230146785176}
+  m_PrefabAsset: {fileID: 0}

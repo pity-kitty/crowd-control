@@ -1,6 +1,6 @@
 using System;
+using Gate;
 using Services;
-using UnityEngine;
 using Zenject;
 
 namespace Spawners
@@ -9,16 +9,29 @@ namespace Spawners
     {
         [Inject] private UserDataService userDataService;
 
-        public Vector3 SpawnerPosition => transform.position;
-
         private void Start()
         {
-            EventServiceReference.GateCollected += SpawnBodies;
+            EventServiceReference.GateCollected += GateCollected;
         }
 
         public void SpawnInitialCrowd()
         {
             SpawnBodies(userDataService.CurrentUser.StartCrowdCount, false);
+        }
+
+        private void GateCollected(MultiplyType multiplyType, int gateValue, bool needAnimate)
+        {
+            var spawnValue = 0;
+            switch (multiplyType)
+            {
+                case MultiplyType.Addition:
+                    spawnValue = gateValue;
+                    break;
+                case MultiplyType.Multiplication:
+                    spawnValue = BodiesCount * gateValue - BodiesCount;
+                    break;
+            }
+            SpawnBodies(spawnValue, needAnimate);
         }
 
         protected override void CalculateRadii()
@@ -40,7 +53,7 @@ namespace Spawners
 
         private void OnDestroy()
         {
-            EventServiceReference.GateCollected -= SpawnBodies;
+            EventServiceReference.GateCollected -= GateCollected;
         }
     }
 }

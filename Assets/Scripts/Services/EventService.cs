@@ -1,10 +1,11 @@
 using System;
+using Gate;
 
 namespace Services
 {
     public class EventService
     {
-        private Action<int, bool> gateCollected;
+        private Action<MultiplyType, int, bool> gateCollected;
         private Action fightStarted;
         private Action<bool> fightFinished;
         private Action playerDeathLimitReached;
@@ -13,7 +14,7 @@ namespace Services
         private Action tryAgainPressed;
         private Action nextLevelPressed;
 
-        public event Action<int, bool> GateCollected
+        public event Action<MultiplyType, int, bool> GateCollected
         {
             add => gateCollected += value;
             remove => gateCollected -= value;
@@ -61,9 +62,9 @@ namespace Services
             remove => nextLevelPressed -= value;
         }
 
-        public void InvokeGateCollectedEvent(int gateValue)
+        public void InvokeGateCollectedEvent(MultiplyType multiplyType, int gateValue)
         {
-            gateCollected?.Invoke(gateValue, true);
+            gateCollected?.Invoke(multiplyType, gateValue, true);
         }
         
         public void InvokeFightStarted()
