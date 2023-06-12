@@ -58,6 +58,7 @@ namespace Player
 
         public void ShowIncome(bool state)
         {
+            incomeValueText.text = $"+{levelIncome}";
             incomeCanvasGroup.ShowCanvasGroup(state);
         }
 
