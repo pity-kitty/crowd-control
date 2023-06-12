@@ -420,6 +420,28 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &327485395 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1448815558894217937, guid: 320c894f4401713489d765090b7009ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 3308625834939622996}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &327485396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327485395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 574156435eb242ac97bcbe501e46dd9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationTime: 1.5
+  hitInterval: 3
+  hammerTransform: {fileID: 1134473457}
+  endRotationAngle: -90
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2159,6 +2181,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1067711745}
   m_CullTransparentMesh: 1
+--- !u!4 &1134473457 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8469450134987462525, guid: 320c894f4401713489d765090b7009ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 3308625834939622996}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1186300425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3228,27 +3256,27 @@ PrefabInstance:
     - target: {fileID: 8469450134987462525, guid: 320c894f4401713489d765090b7009ac,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6865847
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8469450134987462525, guid: 320c894f4401713489d765090b7009ac,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8469450134987462525, guid: 320c894f4401713489d765090b7009ac,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8469450134987462525, guid: 320c894f4401713489d765090b7009ac,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.7270499
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8469450134987462525, guid: 320c894f4401713489d765090b7009ac,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -93.279
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 320c894f4401713489d765090b7009ac, type: 3}

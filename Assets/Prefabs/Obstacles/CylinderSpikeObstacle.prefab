@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 5188708508472548456}
   - component: {fileID: 5188708508472548457}
   - component: {fileID: 4400188642495236165}
+  - component: {fileID: 4019175055547749556}
   m_Layer: 10
   m_Name: CylinderSpikeObstacle
   m_TagString: Untagged
@@ -167,6 +168,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696687148bae42de9f2c900eb92f32fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4019175055547749556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5188708508472548462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd0d7c7c0b6489794bf3deefa88b8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationAxis: {x: 0, y: 1, z: 0}
+  angle: 90
 --- !u!1 &5188708508786793342
 GameObject:
   m_ObjectHideFlags: 0
