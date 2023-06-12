@@ -74,7 +74,7 @@ namespace Player
         {
             var position = transform.position;
             position.x += deltaPosition * Time.deltaTime * sensitivity;
-            position.x = Mathf.Clamp(position.x, leftXBoundary + offset, rightXBoundary - offset);
+            position.x = Mathf.Clamp(position.x, Mathf.Min(leftXBoundary + offset, 0),  Mathf.Max(rightXBoundary - offset, 0));
             transform.position = position;
         }
 

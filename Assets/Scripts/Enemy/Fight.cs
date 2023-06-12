@@ -56,6 +56,7 @@ namespace Enemy
             else
             {
                 playerSpawner.DestroyRest();
+                playerSpawner.BodiesDieLimit = 0;
                 yield return new WaitForFixedUpdate();
                 playerSpawner.ForceAll();
                 eventService.InvokeFightFinished(true);
