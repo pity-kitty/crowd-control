@@ -78,6 +78,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrowdCount
       objectReference: {fileID: 0}
+    - target: {fileID: 1992685379301541183, guid: 71c35aeccacfbe942884983067fad39a,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8194723186510180296, guid: 71c35aeccacfbe942884983067fad39a,
         type: 3}
       propertyPath: m_Pivot.x
@@ -166,7 +171,7 @@ PrefabInstance:
     - target: {fileID: 8194723186510180296, guid: 71c35aeccacfbe942884983067fad39a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6.15
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 8194723186510180296, guid: 71c35aeccacfbe942884983067fad39a,
         type: 3}

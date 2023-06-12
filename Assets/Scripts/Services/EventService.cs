@@ -10,6 +10,7 @@ namespace Services
         private Action<bool> fightFinished;
         private Action playerDeathLimitReached;
         private Action playerLost;
+        private Action playerWon;
         private Action<float> radiusRecalculated;
         private Action tryAgainPressed;
         private Action nextLevelPressed;
@@ -42,6 +43,12 @@ namespace Services
         {
             add => playerLost += value;
             remove => playerLost -= value;
+        }
+        
+        public event Action PlayerWon
+        {
+            add => playerWon += value;
+            remove => playerWon -= value;
         }
         
         public event Action<float> RadiusRecalculated
@@ -85,6 +92,11 @@ namespace Services
         public void InvokePlayerLost()
         {
             playerLost?.Invoke();
+        }
+
+        public void InvokePlayerWon()
+        {
+            playerWon?.Invoke();
         }
 
         public void InvokeRadiusRecalculated(float maxRadius)

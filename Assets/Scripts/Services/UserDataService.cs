@@ -13,6 +13,11 @@ namespace Services
 
         public UserData CurrentUser => currentUser;
 
+        public void SaveUserData()
+        {
+            SaveUserData(currentUser);
+        }
+        
         public void SaveUserData(UserData userData)
         {
             PlayerPrefs.SetInt(MoneyKey, userData.Money);

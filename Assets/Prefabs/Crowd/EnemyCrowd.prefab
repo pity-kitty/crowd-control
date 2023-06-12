@@ -107,6 +107,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1992685379301541183, guid: 71c35aeccacfbe942884983067fad39a,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898284178773647439, guid: 71c35aeccacfbe942884983067fad39a,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.21226418
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898284178773647439, guid: 71c35aeccacfbe942884983067fad39a,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.27647004
+      objectReference: {fileID: 0}
+    - target: {fileID: 3898284178773647439, guid: 71c35aeccacfbe942884983067fad39a,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8194723186510180296, guid: 71c35aeccacfbe942884983067fad39a,
         type: 3}
       propertyPath: m_Pivot.x
@@ -195,7 +215,7 @@ PrefabInstance:
     - target: {fileID: 8194723186510180296, guid: 71c35aeccacfbe942884983067fad39a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6.15
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 8194723186510180296, guid: 71c35aeccacfbe942884983067fad39a,
         type: 3}

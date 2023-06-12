@@ -25,11 +25,13 @@ namespace StateMachine
         public EndScreenUI EndScreenUI => endScreenUI;
         
         private EventService eventService;
+        private UserDataService userDataService;
 
         [Inject]
-        private void Construct(EventService eventServiceReference)
+        private void Construct(EventService eventServiceReference, UserDataService userDataServiceRefernce)
         {
             eventService = eventServiceReference;
+            userDataService = userDataServiceRefernce;
         }
 
         public MainMenuState MainMenuState;
@@ -40,7 +42,7 @@ namespace StateMachine
         private void Awake()
         {
             MainMenuState = new MainMenuState(this, eventService);
-            RunningState = new RunningState(this, eventService);
+            RunningState = new RunningState(this, eventService, userDataService);
             FightingState = new FightingState(this, eventService);
             EndState = new EndState(this, eventService);
         }
