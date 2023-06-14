@@ -10,8 +10,6 @@ namespace Spawners
     {
         [Inject] private UserDataService userDataService;
 
-        public Vector3 SpawnerPosition => transform.position;
-
         private void Start()
         {
             EventServiceReference.GateCollected += GateCollected;

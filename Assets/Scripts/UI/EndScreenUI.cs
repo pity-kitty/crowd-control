@@ -14,6 +14,8 @@ namespace UI
         [SerializeField] private Button tryAgainButton;
         [SerializeField] private Button nextLevelButton;
 
+        private EndScreenType currentEndScreen = EndScreenType.None;
+
         private EventService eventService;
 
         [Inject]
@@ -45,12 +47,14 @@ namespace UI
 
         public void ShowGameOverScreen(bool state)
         {
+            if (currentEndScreen == EndScreenType.Lose) return;
             gameOverScreen.ShowCanvasGroup(state);
             victoryScreen.ShowCanvasGroup(!state);
         }
 
         public void ShowVictoryScreen(bool state)
         {
+            if (currentEndScreen == EndScreenType.Victory) return;
             victoryScreen.ShowCanvasGroup(state);
             gameOverScreen.ShowCanvasGroup(!state);
         }

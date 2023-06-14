@@ -11,7 +11,6 @@ namespace UI
     {
         [SerializeField] private CanvasGroup mainUiCanvasGroup;
         [SerializeField] private Button tapToStartButton;
-        //TODO: Add user data elements
 
         private UserDataService userDataService;
 

@@ -36,6 +36,7 @@ namespace Spawners
         [HideInInspector]
         public int BodiesDieLimit = 0;
         public int BodiesCount => bodies.Count;
+        public Vector3 SpawnerPosition => transform.position;
         protected EventService EventServiceReference => eventService;
         protected float MaxRadius => maxRadius;
 
@@ -98,12 +99,13 @@ namespace Spawners
                 var spawnedBody = Instantiate(bodyPrefab, spawnPosition, spawnerTransform.rotation, spawnerTransform);
                 bodies.Add(spawnedBody.ID, spawnedBody);
                 if (needAnimate) spawnedBody.SetRunningAnimation();
+                spawnedBody.SetEventService(eventService);
                 spawnedBody.BodyDestroyed += RemoveBodyFromList;
+                spawnedBody.MoveConstantly();
                 await Task.Yield();
             }
             crowdCountText.text = bodies.Count.ToString();
             await Task.Yield();
-            ForceAll();
             ShowCounter(true);
         }
 
