@@ -32,8 +32,8 @@ namespace Level
             currentIndex = userDataService.CurrentUser.Level;
             SpawnLevel(currentIndex);
             
-            QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = TargetFrameRate;
+            // QualitySettings.vSyncCount = 0;
+            // Application.targetFrameRate = TargetFrameRate;
         }
 
         private IEnumerator MoveLevel()

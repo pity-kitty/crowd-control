@@ -73,8 +73,8 @@ namespace Enemy
             else
             {
                 playerSpawner.DestroyRest();
-                playerSpawner.BodiesDieLimit = 0;
                 yield return new WaitForFixedUpdate();
+                playerSpawner.BodiesDieLimit = 0;
                 playerSpawner.ForceAll();
                 eventService.InvokeFightFinished(true);
             }

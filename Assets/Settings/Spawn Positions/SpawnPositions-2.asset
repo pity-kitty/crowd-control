@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8120f70aa78243de88eef96c3a5e59f9, type: 3}
+  m_Name: SpawnPositions-2
+  m_EditorClassIdentifier: 
+  Positions:
+  - {x: 0, y: 0, z: 1.4}
+  - {x: 0.6506125, y: 0, z: 1.2396384}
+  - {x: 1.1521773, y: 0, z: 0.7952905}
+  - {x: 1.3897924, y: 0, z: 0.16875152}
+  - {x: 1.3090227, y: 0, z: -0.49644694}
+  - {x: 0.92837197, y: 0, z: -1.0479149}
+  - {x: 0.33504227, y: 0, z: -1.3593185}
+  - {x: -0.33504218, y: 0, z: -1.3593185}
+  - {x: -0.92837185, y: 0, z: -1.0479149}
+  - {x: -1.3090227, y: 0, z: -0.49644703}
+  - {x: -1.3897924, y: 0, z: 0.16875078}
+  - {x: -1.1521776, y: 0, z: 0.7952904}
+  - {x: -0.65061307, y: 0, z: 1.2396381}

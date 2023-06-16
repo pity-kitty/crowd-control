@@ -150,9 +150,9 @@ namespace Spawners
             var destroyedCount = 0;
             foreach (var body in bodies.Values)
             {
+                if (destroyedCount <= countToDestroy) break;
                 Destroy(body.gameObject);
                 destroyedCount++;
-                if (destroyedCount == countToDestroy) break;
             }
         }
 

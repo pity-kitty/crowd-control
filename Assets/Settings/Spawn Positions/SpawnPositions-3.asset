@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8120f70aa78243de88eef96c3a5e59f9, type: 3}
+  m_Name: SpawnPositions-3
+  m_EditorClassIdentifier: 
+  Positions:
+  - {x: 0, y: 0, z: 2.1}
+  - {x: 0.68186885, y: 0, z: 1.9862161}
+  - {x: 1.2898465, y: 0, z: 1.657195}
+  - {x: 1.7580495, y: 0, z: 1.1485912}
+  - {x: 2.0357406, y: 0, z: 0.5155195}
+  - {x: 2.0928273, y: 0, z: -0.17341658}
+  - {x: 1.923124, y: 0, z: -0.8435603}
+  - {x: 1.5450201, y: 0, z: -1.4222912}
+  - {x: 0.9994895, y: 0, z: -1.8468947}
+  - {x: 0.34564868, y: 0, z: -2.0713587}
+  - {x: -0.34564856, y: 0, z: -2.0713587}
+  - {x: -0.99948937, y: 0, z: -1.8468947}
+  - {x: -1.5450201, y: 0, z: -1.4222913}
+  - {x: -1.9231241, y: 0, z: -0.84356}
+  - {x: -2.0928273, y: 0, z: -0.1734167}
+  - {x: -2.0357404, y: 0, z: 0.51551986}
+  - {x: -1.7580495, y: 0, z: 1.148591}
+  - {x: -1.2898471, y: 0, z: 1.6571946}
+  - {x: -0.681869, y: 0, z: 1.9862161}

@@ -92,7 +92,7 @@ namespace Player
             {
                 var bodyTransform = transform;
                 var direction = bodyTransform.parent.position - bodyTransform.position;
-                modelRigidbody.AddForce(direction, ForceMode.Impulse);
+                modelRigidbody.AddForce(direction / 2, ForceMode.Impulse);
                 yield return new WaitForSeconds(moveInterval);
             }
         }
