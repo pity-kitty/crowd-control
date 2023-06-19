@@ -14,7 +14,8 @@ namespace Spawners
     public abstract class Spawner : MonoBehaviour
     {
         private const float PlayerSize = 0.7f;
-        
+
+        [SerializeField] private SpawnPositions[] spawnPositionsArray;
         [SerializeField] private Body bodyPrefab;
         [SerializeField] private CanvasGroup counterCanvasGroup;
         [SerializeField] private TMP_Text crowdCountText;
@@ -90,23 +91,50 @@ namespace Spawners
         private async void SpawnRoutine(bool needAnimate)
         {
             await Task.Yield();
+            var circlesCount = GetCirclesCount();
             var spawnerTransform = transform;
             var center = spawnerTransform.position;
-            CalculateRadii();
-            for (var i = 0; i < amountToSpawn; i++)
+            var spawnedBody = Instantiate(bodyPrefab, center, spawnerTransform.rotation, spawnerTransform);
+            bodies.Add(spawnedBody.ID, spawnedBody);
+            if (needAnimate) spawnedBody.SetRunningAnimation();
+            spawnedBody.SetEventService(eventService);
+            spawnedBody.BodyDestroyed += RemoveBodyFromList;
+            spawnedBody.MoveConstantly();
+            var spawnedCount = 1;
+            for (var i = 0; i < circlesCount; i++)
             {
-                var spawnPosition = RandomCircle(center);
-                var spawnedBody = Instantiate(bodyPrefab, spawnPosition, spawnerTransform.rotation, spawnerTransform);
-                bodies.Add(spawnedBody.ID, spawnedBody);
-                if (needAnimate) spawnedBody.SetRunningAnimation();
-                spawnedBody.SetEventService(eventService);
-                spawnedBody.BodyDestroyed += RemoveBodyFromList;
-                spawnedBody.MoveConstantly();
-                await Task.Yield();
+                var spawnPositions = spawnPositionsArray[i];
+                var positions = spawnPositions.Positions;
+                foreach (var position in positions)
+                {
+                    spawnedBody = Instantiate(bodyPrefab, position, spawnerTransform.rotation, spawnerTransform);
+                    spawnedBody.transform.localPosition = position;
+                    bodies.Add(spawnedBody.ID, spawnedBody);
+                    if (needAnimate) spawnedBody.SetRunningAnimation();
+                    spawnedBody.SetEventService(eventService);
+                    spawnedBody.BodyDestroyed += RemoveBodyFromList;
+                    spawnedBody.MoveConstantly();
+                    spawnedCount++;
+                    if (spawnedCount == amountToSpawn) break;
+                    await Task.Yield();
+                }
             }
+
             crowdCountText.text = bodies.Count.ToString();
-            await Task.Yield();
             ShowCounter(true);
+        }
+
+        private int GetCirclesCount()
+        {
+            if (amountToSpawn <= 1) return 0;
+            var overallLength = 0;
+            for (var i = 0; i < spawnPositionsArray.Length; i++)
+            {
+                overallLength += spawnPositionsArray[i].Positions.Length;
+                if (amountToSpawn < overallLength) return ++i;
+            }
+
+            return spawnPositionsArray.Length;
         }
 
         protected virtual void RemoveBodyFromList(Guid guid)

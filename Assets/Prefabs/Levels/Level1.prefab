@@ -166,6 +166,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyCrowd
       objectReference: {fileID: 0}
+    - target: {fileID: 2267435420095494832, guid: c2479157e4445f043ae4dabdd7e1b956,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2267435420095494834, guid: c2479157e4445f043ae4dabdd7e1b956,
         type: 3}
       propertyPath: m_RootOrder

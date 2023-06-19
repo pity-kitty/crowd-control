@@ -47,6 +47,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6285f54e7d5b4e38b66cebfdc3b43b23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPositionsArray:
+  - {fileID: 11400000, guid: 0f7ea71b0bb33564c9345a2962a445d6, type: 2}
+  - {fileID: 11400000, guid: 4fa97d9d7e9e51645a61878607eafe90, type: 2}
+  - {fileID: 11400000, guid: db9632cb7bb6cf64a8424e0ffc2df78a, type: 2}
+  - {fileID: 11400000, guid: 8930123a0aba81b47840c5bc4cb18042, type: 2}
+  - {fileID: 11400000, guid: d77453a78412c954da51eeb98bc7c8e7, type: 2}
+  - {fileID: 11400000, guid: f13f70b8f9b7f954cb93d901f797ff0b, type: 2}
+  - {fileID: 11400000, guid: 4a77d218379858147986af66916bd66d, type: 2}
+  - {fileID: 11400000, guid: 71c934265ca564e4da30d4096af481a8, type: 2}
+  - {fileID: 11400000, guid: 9dac177382493c14e8f87f8643e0c2ac, type: 2}
+  - {fileID: 11400000, guid: ba0ffb10b31a3db46aeaf6d084df5adb, type: 2}
   bodyPrefab: {fileID: 1655308930712071701, guid: d782dda676feb9b4282fde6c7b3dea6e,
     type: 3}
   counterCanvasGroup: {fileID: 5581027067417716828}

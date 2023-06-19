@@ -5,6 +5,10 @@ using UnityEngine.UIElements;
 
 public class GenerateSpawnPositionsEditor : EditorWindow
 {
+    private const string Path = "Assets/Settings/Spawn Positions/";
+    private const string FileName = "SpawnPositions-";
+    private const string FileExtension = ".asset";
+
     [MenuItem("Window/Custom/Generate Spawn Positions Editor")]
     public static void ShowEditor()
     {
@@ -48,7 +52,7 @@ public class GenerateSpawnPositionsEditor : EditorWindow
                 positionsInRaw[i] = circlePosition;
             }
             spawnPositions.Positions = positionsInRaw;
-            AssetDatabase.CreateAsset(spawnPositions, $"Assets/Settings/Spawn Positions/SpawnPositions-{j}.asset");
+            AssetDatabase.CreateAsset(spawnPositions, $"{Path}{FileName}{j}{FileExtension}");
             AssetDatabase.SaveAssets();
         }
     }
