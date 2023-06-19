@@ -1,7 +1,6 @@
-using System;
 using Gate;
+using Player;
 using Services;
-using UnityEngine;
 using Zenject;
 
 namespace Spawners
@@ -10,8 +9,9 @@ namespace Spawners
     {
         [Inject] private UserDataService userDataService;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             EventServiceReference.GateCollected += GateCollected;
         }
 
@@ -36,15 +36,9 @@ namespace Spawners
             SpawnBodies(spawnValue, needAnimate);
         }
 
-        protected override void CalculateRadii()
+        protected override void RemoveBodyFromList(Body body)
         {
-            base.CalculateRadii();
-            EventServiceReference.InvokeRadiusRecalculated(MaxRadius);
-        }
-
-        protected override void RemoveBodyFromList(Guid guid)
-        {
-            base.RemoveBodyFromList(guid);
+            base.RemoveBodyFromList(body);
             if (BodiesCount == 0)
             {
                 ShowCounter(false);

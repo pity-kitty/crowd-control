@@ -6,20 +6,21 @@ using Player;
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Pool;
 using Zenject;
-using Random = UnityEngine.Random;
 
 namespace Spawners
 {
     public abstract class Spawner : MonoBehaviour
     {
-        private const float PlayerSize = 0.7f;
-
         [SerializeField] private SpawnPositions[] spawnPositionsArray;
         [SerializeField] private Body bodyPrefab;
         [SerializeField] private CanvasGroup counterCanvasGroup;
         [SerializeField] private TMP_Text crowdCountText;
+        [SerializeField] private int defaultPoolCapacity = 100;
+        [SerializeField] private int maxPoolCapacity = 300;
 
+        private ObjectPool<Body> pool;
         private Dictionary<Guid, Body> bodies = new();
         
         private EventService eventService;
@@ -39,47 +40,43 @@ namespace Spawners
         public int BodiesCount => bodies.Count;
         public Vector3 SpawnerPosition => transform.position;
         protected EventService EventServiceReference => eventService;
-        protected float MaxRadius => maxRadius;
-
-        private Vector3 RandomCircle(Vector3 center)
+        
+        protected virtual void Start()
         {
-            var angle = Random.value * 360;
-            var radius = Random.Range(minRadius, maxRadius);
-            Vector3 spawnPosition;
-            spawnPosition.x = center.x + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
-            spawnPosition.y = center.y;
-            spawnPosition.z = center.z + radius * Mathf.Cos(angle * Mathf.Deg2Rad);
-            return spawnPosition;
+            pool = new ObjectPool<Body>(CreateBody, GetBody, ReleaseBody, DestroyBody, false, defaultPoolCapacity, maxPoolCapacity);
         }
 
-        protected virtual void CalculateRadii()
+        private Body CreateBody()
         {
-            minRadius = CalculateCrowdRadius(bodies.Count);
-            maxRadius = minRadius + CalculateCrowdRadius(amountToSpawn);
+            var parentTransform = transform;
+            var spawnedBody = Instantiate(bodyPrefab, parentTransform.position, parentTransform.rotation, parentTransform);
+            InitialBodySetup(spawnedBody);
+            return spawnedBody;
         }
 
-        private float CalculateCrowdRadius(int bodiesCount)
+        private void GetBody(Body body)
         {
-            return Mathf.Sqrt(PlayerSize * bodiesCount / Mathf.PI);
+            body.gameObject.SetActive(true);
+            if (!bodies.TryGetValue(body.ID, out _)) InitialBodySetup(body);
         }
 
-        public void ForceAll()
+        private void ReleaseBody(Body body)
         {
-            foreach (var body in bodies.Values)
-            {
-                var direction = transform.position - body.Rigidbody.position;
-                body.Rigidbody.AddForce(direction, ForceMode.Impulse);
-            }
+            body.StopBody();
+            body.gameObject.SetActive(false);
         }
 
-        public void ForceAll(Vector3 position)
+        private void DestroyBody(Body body)
         {
-            foreach (var body in bodies.Values)
-            {
-                var direction = position - body.Rigidbody.position;
-                body.Rigidbody.AddForce(direction);
-                body.SetRunningAnimation();
-            }
+            body.StopBody();
+            Destroy(body.gameObject);
+        }
+
+        private void InitialBodySetup(Body spawnedBody)
+        {
+            bodies.Add(spawnedBody.ID, spawnedBody);
+            spawnedBody.Initialize(eventService, RemoveBodyFromList);
+            spawnedBody.MoveConstantly();
         }
 
         protected void SpawnBodies(int spawnCount, bool needAnimate)
@@ -92,14 +89,8 @@ namespace Spawners
         {
             await Task.Yield();
             var circlesCount = GetCirclesCount();
-            var spawnerTransform = transform;
-            var center = spawnerTransform.position;
-            var spawnedBody = Instantiate(bodyPrefab, center, spawnerTransform.rotation, spawnerTransform);
-            bodies.Add(spawnedBody.ID, spawnedBody);
+            var spawnedBody = pool.Get();
             if (needAnimate) spawnedBody.SetRunningAnimation();
-            spawnedBody.SetEventService(eventService);
-            spawnedBody.BodyDestroyed += RemoveBodyFromList;
-            spawnedBody.MoveConstantly();
             var spawnedCount = 1;
             for (var i = 0; i < circlesCount; i++)
             {
@@ -107,13 +98,9 @@ namespace Spawners
                 var positions = spawnPositions.Positions;
                 foreach (var position in positions)
                 {
-                    spawnedBody = Instantiate(bodyPrefab, position, spawnerTransform.rotation, spawnerTransform);
+                    spawnedBody = pool.Get();
                     spawnedBody.transform.localPosition = position;
-                    bodies.Add(spawnedBody.ID, spawnedBody);
                     if (needAnimate) spawnedBody.SetRunningAnimation();
-                    spawnedBody.SetEventService(eventService);
-                    spawnedBody.BodyDestroyed += RemoveBodyFromList;
-                    spawnedBody.MoveConstantly();
                     spawnedCount++;
                     if (spawnedCount == amountToSpawn) break;
                     await Task.Yield();
@@ -137,9 +124,10 @@ namespace Spawners
             return spawnPositionsArray.Length;
         }
 
-        protected virtual void RemoveBodyFromList(Guid guid)
+        protected virtual void RemoveBodyFromList(Body body)
         {
-            bodies.Remove(guid);
+            pool.Release(body);
+            bodies.Remove(body.ID);
             crowdCountText.text = bodies.Count.ToString();
         }
 

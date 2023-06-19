@@ -52,7 +52,6 @@ namespace Enemy
         {
             while (true)
             {
-                spawner.ForceAll(point);
                 yield return new WaitForFixedUpdate();
             }
         }
@@ -75,7 +74,6 @@ namespace Enemy
                 playerSpawner.DestroyRest();
                 yield return new WaitForFixedUpdate();
                 playerSpawner.BodiesDieLimit = 0;
-                playerSpawner.ForceAll();
                 eventService.InvokeFightFinished(true);
             }
 

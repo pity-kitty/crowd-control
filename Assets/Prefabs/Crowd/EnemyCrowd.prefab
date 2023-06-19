@@ -62,6 +62,8 @@ MonoBehaviour:
     type: 3}
   counterCanvasGroup: {fileID: 5581027067417716828}
   crowdCountText: {fileID: 6517180378245911858}
+  defaultPoolCapacity: 100
+  maxPoolCapacity: 300
   BodiesDieLimit: 0
   spawnCount: 40
   playerLayer: 6

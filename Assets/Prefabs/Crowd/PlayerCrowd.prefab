@@ -61,6 +61,8 @@ MonoBehaviour:
     type: 3}
   counterCanvasGroup: {fileID: 5334717059282911333}
   crowdCountText: {fileID: 6704416652441550091}
+  defaultPoolCapacity: 100
+  maxPoolCapacity: 300
   BodiesDieLimit: 0
 --- !u!114 &6267284085765053936
 MonoBehaviour:

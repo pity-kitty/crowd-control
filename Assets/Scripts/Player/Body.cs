@@ -10,29 +10,19 @@ namespace Player
         private const string RunningParameterName = "IsRunning";
         private const string CheeringParameterName = "IsCheering";
         
-        [SerializeField] private Rigidbody modelRigidbody;
         [SerializeField] private Animator bodyAnimator;
-        [SerializeField] private float moveInterval = 0.1f;
 
         private readonly Guid id = Guid.NewGuid();
         private readonly int runningAnimationParameterID = Animator.StringToHash(RunningParameterName);
         private readonly int cheeringAnimationParameterID = Animator.StringToHash(CheeringParameterName);
-        private Action<Guid> bodyDestroyed;
-        private Coroutine moveCoroutine;
         private EventService eventService;
+        private Action<Body> killAction;
 
         [HideInInspector]
         public bool CanDie = true;
         [HideInInspector]
         public bool CanKill = true;
         public Guid ID => id;
-        public Rigidbody Rigidbody => modelRigidbody;
-        
-        public event Action<Guid> BodyDestroyed
-        {
-            add => bodyDestroyed += value;
-            remove => bodyDestroyed -= value;
-        }
 
         private void Start()
         {
@@ -41,7 +31,11 @@ namespace Player
             eventService.PlayerWon += StopMove;
         }
 
-        public void SetEventService(EventService eventServiceReference) => eventService = eventServiceReference;
+        public void Initialize(EventService eventServiceReference, Action<Body> onKill)
+        {
+            eventService = eventServiceReference;
+            killAction = onKill;
+        }
 
         public void SetAnimation(PlayerAnimation playerAnimation)
         {
@@ -78,23 +72,12 @@ namespace Player
 
         public void MoveConstantly()
         {
-            moveCoroutine = StartCoroutine(Move());
+            
         }
 
         public void StopMove()
         {
-            StopCoroutine(moveCoroutine);
-        }
-
-        private IEnumerator Move()
-        {
-            while (true)
-            {
-                var bodyTransform = transform;
-                var direction = bodyTransform.parent.position - bodyTransform.position;
-                modelRigidbody.AddForce(direction / 2, ForceMode.Impulse);
-                yield return new WaitForSeconds(moveInterval);
-            }
+            
         }
 
         private void OnFightEnd(bool state)
@@ -102,12 +85,27 @@ namespace Player
             MoveConstantly();
         }
 
-        private void OnDestroy()
+        // private void OnDestroy()
+        // {
+        //     KillBody();
+        // }
+        //
+        // private void OnDisable()
+        // {
+        //     KillBody();
+        // }
+
+        protected void KillBody()
         {
-            bodyDestroyed?.Invoke(id);
+            killAction(this);
             eventService.FightStarted -= StopMove;
             eventService.FightFinished -= OnFightEnd;
             eventService.PlayerWon -= StopMove;
+        }
+
+        public void StopBody()
+        {
+            StopAllCoroutines();
         }
     }
 }

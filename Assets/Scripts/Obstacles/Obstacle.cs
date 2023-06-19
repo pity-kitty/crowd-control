@@ -6,7 +6,7 @@ namespace Obstacles
     {
         private void OnTriggerEnter(Collider other)
         {
-            Destroy(other.gameObject);
+            //Destroy(other.gameObject);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using Enemy;
+using Player;
 using UnityEngine;
 using Zenject;
 
@@ -16,14 +17,15 @@ namespace Spawners
 
         [Inject] private PlayerSpawner playerSpawner;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             SpawnBodies(spawnCount, false);
         }
 
-        protected override void RemoveBodyFromList(Guid guid)
+        protected override void RemoveBodyFromList(Body body)
         {
-            base.RemoveBodyFromList(guid);
+            base.RemoveBodyFromList(body);
             if (BodiesCount == 0) ShowCounter(false);
             if (BodiesCount == BodiesDieLimit) RestrictDeath();
         }
