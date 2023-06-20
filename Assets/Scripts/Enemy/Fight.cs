@@ -66,12 +66,10 @@ namespace Enemy
             if (playerSpawner.BodiesDieLimit == 0)
             {
                 playerSpawner.DestroyAllBodies();
-                enemySpawner.DestroyRest();
                 eventService.InvokeFightFinished(false);
             }
             else
             {
-                playerSpawner.DestroyRest();
                 yield return new WaitForFixedUpdate();
                 playerSpawner.BodiesDieLimit = 0;
                 eventService.InvokeFightFinished(true);

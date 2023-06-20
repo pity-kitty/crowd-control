@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class GenerateSpawnPositionsEditor : EditorWindow
 {
-    private const string Path = "Assets/Settings/Spawn Positions/";
+    private const string Path = "Assets/Prefabs/Crowd/Spawn Positions/";
     private const string FileName = "SpawnPositions-";
     private const string FileExtension = ".asset";
 

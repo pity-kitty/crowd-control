@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Extensions;
 using Player;
@@ -19,10 +21,12 @@ namespace Spawners
         [SerializeField] private TMP_Text crowdCountText;
         [SerializeField] private int defaultPoolCapacity = 100;
         [SerializeField] private int maxPoolCapacity = 300;
+        [SerializeField] private float regroupDelay = 1f;
 
         private ObjectPool<Body> pool;
         private Dictionary<Guid, Body> bodies = new();
-        
+        private List<PointPosition> freePositions = new List<PointPosition>();
+
         private EventService eventService;
 
         [Inject]
@@ -34,16 +38,20 @@ namespace Spawners
         private int amountToSpawn;
         private float minRadius;
         private float maxRadius;
+        private bool canRegroup = true;
 
         [HideInInspector]
         public int BodiesDieLimit = 0;
         public int BodiesCount => bodies.Count;
         public Vector3 SpawnerPosition => transform.position;
         protected EventService EventServiceReference => eventService;
-        
+
+        public bool CanRegroup => canRegroup;
+
         protected virtual void Start()
         {
             pool = new ObjectPool<Body>(CreateBody, GetBody, ReleaseBody, DestroyBody, false, defaultPoolCapacity, maxPoolCapacity);
+            FillFreePositions();
         }
 
         private Body CreateBody()
@@ -57,7 +65,7 @@ namespace Spawners
         private void GetBody(Body body)
         {
             body.gameObject.SetActive(true);
-            if (!bodies.TryGetValue(body.ID, out _)) InitialBodySetup(body);
+            body.InitializeSubscriptions();
         }
 
         private void ReleaseBody(Body body)
@@ -74,9 +82,20 @@ namespace Spawners
 
         private void InitialBodySetup(Body spawnedBody)
         {
-            bodies.Add(spawnedBody.ID, spawnedBody);
-            spawnedBody.Initialize(eventService, RemoveBodyFromList);
+            spawnedBody.Initialize(eventService, this, RemoveBodyFromList);
             spawnedBody.MoveConstantly();
+        }
+
+        private void FillFreePositions()
+        {
+            freePositions.Add(new PointPosition{ Position = Vector3.zero, Distance = 0 });
+            for (var i = 0; i < spawnPositionsArray.Length; i++)
+            {
+                foreach (var position in spawnPositionsArray[i].Positions)
+                {
+                    freePositions.Add(new PointPosition{ Position = position, Distance = i });
+                }
+            }
         }
 
         protected void SpawnBodies(int spawnCount, bool needAnimate)
@@ -88,25 +107,19 @@ namespace Spawners
         private async void SpawnRoutine(bool needAnimate)
         {
             await Task.Yield();
-            var circlesCount = GetCirclesCount();
-            var spawnedBody = pool.Get();
-            if (needAnimate) spawnedBody.SetRunningAnimation();
-            var spawnedCount = 1;
-            for (var i = 0; i < circlesCount; i++)
+            freePositions.Sort((a, b) => a.Distance.CompareTo(b.Distance));
+            var spawnedCount = 0;
+            foreach (var point in freePositions)
             {
-                var spawnPositions = spawnPositionsArray[i];
-                var positions = spawnPositions.Positions;
-                foreach (var position in positions)
-                {
-                    spawnedBody = pool.Get();
-                    spawnedBody.transform.localPosition = position;
-                    if (needAnimate) spawnedBody.SetRunningAnimation();
-                    spawnedCount++;
-                    if (spawnedCount == amountToSpawn) break;
-                    await Task.Yield();
-                }
+                var spawnedBody = pool.Get();
+                bodies.Add(spawnedBody.ID, spawnedBody);
+                spawnedBody.transform.localPosition = point.Position;
+                spawnedBody.PointPosition = point;
+                if (needAnimate) spawnedBody.SetRunningAnimation();
+                spawnedCount++;
+                if (spawnedCount == amountToSpawn) break;
             }
-
+            freePositions.RemoveRange(0, spawnedCount);
             crowdCountText.text = bodies.Count.ToString();
             ShowCounter(true);
         }
@@ -128,7 +141,42 @@ namespace Spawners
         {
             pool.Release(body);
             bodies.Remove(body.ID);
+            freePositions.Add(body.PointPosition);
             crowdCountText.text = bodies.Count.ToString();
+        }
+
+        public void RegroupBodies()
+        {
+            if (canRegroup) StartCoroutine(Reposition());
+            canRegroup = false;
+        }
+
+        private IEnumerator Reposition()
+        {
+            yield return new WaitForSeconds(regroupDelay);
+            var bodiesList = bodies.Values.ToList();
+            bodiesList.Sort((a, b) => a.PointPosition.Distance.CompareTo(b.PointPosition.Distance));
+            freePositions.Sort((a, b) => a.Distance.CompareTo(b.Distance));
+            var bodiesCount = bodiesList.Count;
+            var countToRemove = 0;
+            for (var i = 0; i < freePositions.Count; i++)
+            {
+                var index = bodiesCount - (i + 1);
+                if (index < 0) break;
+                var point = freePositions[i];
+                var body = bodiesList[index];
+                if (point.Distance >= body.PointPosition.Distance) break;
+                if (body.PointPosition.Distance > point.Distance)
+                {
+                    freePositions.Add(body.PointPosition);
+                    body.PointPosition = point;
+                    body.transform.localPosition = point.Position;
+                    countToRemove++;
+                }
+            }
+            freePositions.RemoveRange(0, countToRemove);
+            yield return null;
+            canRegroup = true;
         }
 
         protected void RestrictDeath()
@@ -156,20 +204,11 @@ namespace Spawners
         {
             foreach (var body in bodies.Values)
             {
-                Destroy(body.gameObject);
+                pool.Release(body);
             }
-        }
-
-        public void DestroyRest()
-        {
-            var countToDestroy = BodiesCount - BodiesDieLimit;
-            var destroyedCount = 0;
-            foreach (var body in bodies.Values)
-            {
-                if (destroyedCount <= countToDestroy) break;
-                Destroy(body.gameObject);
-                destroyedCount++;
-            }
+            
+            bodies.Clear();
+            crowdCountText.text = bodies.Count.ToString();
         }
 
         public void SetAnimationForAllBodies(PlayerAnimation playerAnimation)

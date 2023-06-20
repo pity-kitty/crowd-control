@@ -48,16 +48,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPositionsArray:
-  - {fileID: 11400000, guid: 0f7ea71b0bb33564c9345a2962a445d6, type: 2}
-  - {fileID: 11400000, guid: 4fa97d9d7e9e51645a61878607eafe90, type: 2}
-  - {fileID: 11400000, guid: db9632cb7bb6cf64a8424e0ffc2df78a, type: 2}
-  - {fileID: 11400000, guid: 8930123a0aba81b47840c5bc4cb18042, type: 2}
-  - {fileID: 11400000, guid: d77453a78412c954da51eeb98bc7c8e7, type: 2}
-  - {fileID: 11400000, guid: f13f70b8f9b7f954cb93d901f797ff0b, type: 2}
-  - {fileID: 11400000, guid: 4a77d218379858147986af66916bd66d, type: 2}
-  - {fileID: 11400000, guid: 71c934265ca564e4da30d4096af481a8, type: 2}
-  - {fileID: 11400000, guid: 9dac177382493c14e8f87f8643e0c2ac, type: 2}
-  - {fileID: 11400000, guid: ba0ffb10b31a3db46aeaf6d084df5adb, type: 2}
+  - {fileID: 11400000, guid: b63a10f21d0ad1544b2f1c0a42c9bac1, type: 2}
+  - {fileID: 11400000, guid: 17ff0f6db4744ca40a5fd6427ab7a8e4, type: 2}
+  - {fileID: 11400000, guid: a7deaae36a0d07843997a48a129bf347, type: 2}
+  - {fileID: 11400000, guid: afec28e1c14bd304e8141d7b0f2ceec3, type: 2}
+  - {fileID: 11400000, guid: 9b40ac9fe53ded149be6c684762a5019, type: 2}
+  - {fileID: 11400000, guid: 41b0d7a5b089ab840859fb6d1954f383, type: 2}
+  - {fileID: 11400000, guid: a29e46160116006418b2cadd02a9915c, type: 2}
+  - {fileID: 11400000, guid: d00a23d5f38c2e344b1a3ec78c608705, type: 2}
+  - {fileID: 11400000, guid: fea01b5902289cb429262a159250cfb4, type: 2}
+  - {fileID: 11400000, guid: d32a9a4f927f8e841aa5a909363d2b41, type: 2}
   bodyPrefab: {fileID: 1655308930712071701, guid: d782dda676feb9b4282fde6c7b3dea6e,
     type: 3}
   counterCanvasGroup: {fileID: 5581027067417716828}

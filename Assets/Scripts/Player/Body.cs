@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Services;
+using Spawners;
 using UnityEngine;
 
 namespace Player
@@ -17,23 +18,27 @@ namespace Player
         private readonly int cheeringAnimationParameterID = Animator.StringToHash(CheeringParameterName);
         private EventService eventService;
         private Action<Body> killAction;
+        private Spawner spawner;
 
+        protected Spawner Spawner => spawner;
         [HideInInspector]
         public bool CanDie = true;
         [HideInInspector]
         public bool CanKill = true;
         public Guid ID => id;
+        public PointPosition PointPosition;
 
-        private void Start()
+        public void InitializeSubscriptions()
         {
             eventService.FightStarted += StopMove;
             eventService.FightFinished += OnFightEnd;
             eventService.PlayerWon += StopMove;
         }
 
-        public void Initialize(EventService eventServiceReference, Action<Body> onKill)
+        public void Initialize(EventService eventServiceReference, Spawner spawnerReference, Action<Body> onKill)
         {
             eventService = eventServiceReference;
+            spawner = spawnerReference;
             killAction = onKill;
         }
 

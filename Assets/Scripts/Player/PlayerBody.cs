@@ -10,6 +10,7 @@ namespace Player
         {
             if (other.gameObject.layer != obstacleLayer) return;
             KillBody();
+            if (Spawner.CanRegroup) Spawner.RegroupBodies();
         }
     }
 }
