@@ -63,7 +63,8 @@ MonoBehaviour:
   crowdCountText: {fileID: 6704416652441550091}
   defaultPoolCapacity: 100
   maxPoolCapacity: 300
-  BodiesDieLimit: 0
+  regroupDelay: 1.5
+  moveDuration: 0.5
 --- !u!114 &6267284085765053936
 MonoBehaviour:
   m_ObjectHideFlags: 0

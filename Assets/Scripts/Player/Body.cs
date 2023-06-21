@@ -10,29 +10,32 @@ namespace Player
     {
         private const string RunningParameterName = "IsRunning";
         private const string CheeringParameterName = "IsCheering";
-        
+
+        [SerializeField] private CharacterController characterController;
         [SerializeField] private Animator bodyAnimator;
+        [SerializeField] private float moveSpeed = 0.5f;
+        [SerializeField] private float distanceCoefficient = 3f;
 
         private readonly Guid id = Guid.NewGuid();
         private readonly int runningAnimationParameterID = Animator.StringToHash(RunningParameterName);
         private readonly int cheeringAnimationParameterID = Animator.StringToHash(CheeringParameterName);
         private EventService eventService;
-        private Action<Body> killAction;
         private Spawner spawner;
+        private Action<Body> killAction;
+        private float distanceThreshold;
 
         protected Spawner Spawner => spawner;
-        [HideInInspector]
-        public bool CanDie = true;
-        [HideInInspector]
-        public bool CanKill = true;
         public Guid ID => id;
         public PointPosition PointPosition;
 
+        private void Start()
+        {
+            distanceThreshold = characterController.radius * 2f * distanceCoefficient;
+        }
+
         public void InitializeSubscriptions()
         {
-            eventService.FightStarted += StopMove;
-            eventService.FightFinished += OnFightEnd;
-            eventService.PlayerWon += StopMove;
+            eventService.FightFinished += StopBody;
         }
 
         public void Initialize(EventService eventServiceReference, Spawner spawnerReference, Action<Body> onKill)
@@ -75,27 +78,29 @@ namespace Player
             bodyAnimator.SetBool(runningAnimationParameterID, false);
         }
 
-        public void MoveConstantly()
+        public void Move(Vector3 position, bool canDie = false)
         {
-            
+            StartCoroutine(MoveCoroutine(position, canDie));
         }
 
-        public void StopMove()
+        private IEnumerator MoveCoroutine(Vector3 position, bool canDie)
         {
-            
-        }
-
-        private void OnFightEnd(bool state)
-        {
-            MoveConstantly();
+            var distance = float.MaxValue;
+            while (distance > distanceThreshold)
+            {
+                var bodyPosition = transform.position;
+                var direction = (position - bodyPosition).normalized;
+                characterController.Move(direction * (Time.deltaTime * moveSpeed));
+                distance = Vector3.Distance(position, bodyPosition);
+                yield return null;
+            }
+            if (canDie) KillBody();
         }
 
         protected void KillBody()
         {
             killAction(this);
-            eventService.FightStarted -= StopMove;
-            eventService.FightFinished -= OnFightEnd;
-            eventService.PlayerWon -= StopMove;
+            eventService.FightFinished -= StopBody;
         }
 
         public void StopBody()

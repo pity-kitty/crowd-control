@@ -13,11 +13,13 @@ namespace StateMachine
             gameStateContext.PlayerControl.EnableControl(false);
             gameStateContext.LevelService.StopMovement();
             eventService.FightFinished += OnFightFinish;
+            eventService.PlayerLost += OnPlayerLose;
         }
 
         public override void LeaveState()
         {
             eventService.FightFinished -= OnFightFinish;
+            eventService.PlayerLost -= OnPlayerLose;
             if (isPlayerAlive)
             {
                 gameStateContext.SwitchState(gameStateContext.RunningState);
@@ -29,9 +31,15 @@ namespace StateMachine
             gameStateContext.SwitchState(gameStateContext.EndState);
         }
 
-        private void OnFightFinish(bool isAlive)
+        private void OnFightFinish()
         {
-            isPlayerAlive = isAlive;
+            isPlayerAlive = true;
+            LeaveState();
+        }
+
+        private void OnPlayerLose()
+        {
+            isPlayerAlive = false;
             LeaveState();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Player;
 using Services;
 using Spawners;
@@ -8,8 +9,6 @@ namespace Enemy
 {
     public class Fight : MonoBehaviour
     {
-        private const float TimeToWait = 3f;
-
         private int income;
 
         private EventService eventService;
@@ -29,53 +28,46 @@ namespace Enemy
         {
             eventService.InvokeFightStarted();
             enemySpawner.SetAnimationForAllBodies(PlayerAnimation.Running);
-            var playerBodies = playerSpawner.BodiesCount;
-            var enemyBodies = enemySpawner.BodiesCount;
-            var dieLimit = playerBodies - enemyBodies;
+            var playerBodies = playerSpawner.Bodies;
+            playerBodies.Sort((a, b) => a.PointPosition.Position.z.CompareTo(b.PointPosition.Position.z));
+            playerBodies.Reverse();
+            var enemyBodies = enemySpawner.Bodies;
+            enemyBodies.Sort((a, b) => a.PointPosition.Position.z.CompareTo(b.PointPosition.Position.z));
+            var playerBodiesCount = playerSpawner.BodiesCount;
+            var enemyBodiesCount = enemySpawner.BodiesCount;
+            var dieLimit = playerBodiesCount - enemyBodiesCount;
             if (dieLimit > 0)
             {
-                playerSpawner.BodiesDieLimit = dieLimit;
-                income = enemyBodies;
+                StartCoroutine(InitializeFight(playerBodies, enemyBodies));
+                income = enemyBodiesCount;
             }
             else
             {
-                enemySpawner.BodiesDieLimit = -dieLimit;
-                income = playerBodies;
+                StartCoroutine(InitializeFight(enemyBodies, playerBodies));
+                income = playerBodiesCount;
             }
-            eventService.PlayerDeathLimitReached += enemySpawner.RestrictKill;
-            enemyMoveCoroutine = StartCoroutine(MoveToPoint(enemySpawner, playerSpawner.SpawnerPosition));
-            playerMoveCoroutine = StartCoroutine(MoveToPoint(playerSpawner, enemySpawner.SpawnerPosition));
-            StartCoroutine(DetermineFightResult());
         }
 
-        private IEnumerator MoveToPoint(Spawner spawner, Vector3 point)
+        private IEnumerator InitializeFight(List<Body> winner, List<Body> loser)
         {
-            while (true)
+            var loserIndex = 0;
+            var canDie = true;
+            var loserCount = loser.Count;
+            foreach (var body in winner)
             {
-                yield return new WaitForFixedUpdate();
+                if (loserIndex == loserCount)
+                {
+                    loserIndex = 0;
+                    canDie = false;
+                }
+                var loserBody = loser[loserIndex];
+                var movePosition = Vector3.Lerp(body.transform.position, loserBody.transform.position, 0.5f);
+                body.Move(movePosition, canDie);
+                if (canDie) loserBody.Move(movePosition, true);
+                loserIndex++;
+                yield return null;
             }
-        }
-
-        private IEnumerator DetermineFightResult()
-        {
-            yield return new WaitForSeconds(TimeToWait);
-            StopCoroutine(playerMoveCoroutine);
-            StopCoroutine(enemyMoveCoroutine);
-            if (enemySpawner.BodiesDieLimit == 0) enemySpawner.DestroyAllBodies();
             eventService.InvokeMoneyGained(income);
-            if (playerSpawner.BodiesDieLimit == 0)
-            {
-                playerSpawner.DestroyAllBodies();
-                eventService.InvokeFightFinished(false);
-            }
-            else
-            {
-                yield return new WaitForFixedUpdate();
-                playerSpawner.BodiesDieLimit = 0;
-                eventService.InvokeFightFinished(true);
-            }
-
-            eventService.PlayerDeathLimitReached -= enemySpawner.RestrictKill;
         }
     }
 }

@@ -44,7 +44,6 @@ namespace Spawners
                 ShowCounter(false);
                 EventServiceReference.InvokePlayerLost();
             }
-            if (BodiesCount == BodiesDieLimit) EventServiceReference.InvokePlayerDeathLimitReached();
         }
 
         private void OnDestroy()

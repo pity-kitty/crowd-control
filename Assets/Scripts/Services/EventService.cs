@@ -7,11 +7,9 @@ namespace Services
     {
         private Action<MultiplyType, int, bool> gateCollected;
         private Action fightStarted;
-        private Action<bool> fightFinished;
-        private Action playerDeathLimitReached;
+        private Action fightFinished;
         private Action playerLost;
         private Action playerWon;
-        private Action<float> radiusRecalculated;
         private Action tryAgainPressed;
         private Action nextLevelPressed;
         private Action<int> moneyGained;
@@ -28,16 +26,10 @@ namespace Services
             remove => fightStarted -= value;
         }
         
-        public event Action<bool> FightFinished
+        public event Action FightFinished
         {
             add => fightFinished += value;
             remove => fightFinished -= value;
-        }
-        
-        public event Action PlayerDeathLimitReached
-        {
-            add => playerDeathLimitReached += value;
-            remove => playerDeathLimitReached -= value;
         }
         
         public event Action PlayerLost
@@ -50,12 +42,6 @@ namespace Services
         {
             add => playerWon += value;
             remove => playerWon -= value;
-        }
-        
-        public event Action<float> RadiusRecalculated
-        {
-            add => radiusRecalculated += value;
-            remove => radiusRecalculated -= value;
         }
         
         public event Action TryAgainPressed
@@ -86,14 +72,9 @@ namespace Services
             fightStarted?.Invoke();
         }
 
-        public void InvokeFightFinished(bool hasPlayerWon)
+        public void InvokeFightFinished()
         {
-            fightFinished?.Invoke(hasPlayerWon);
-        }
-
-        public void InvokePlayerDeathLimitReached()
-        {
-            playerDeathLimitReached?.Invoke();
+            fightFinished?.Invoke();
         }
 
         public void InvokePlayerLost()
@@ -104,11 +85,6 @@ namespace Services
         public void InvokePlayerWon()
         {
             playerWon?.Invoke();
-        }
-
-        public void InvokeRadiusRecalculated(float maxRadius)
-        {
-            radiusRecalculated?.Invoke(maxRadius);
         }
 
         public void InvokeTryAgainPressed()
