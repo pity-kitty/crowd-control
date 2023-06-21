@@ -90,16 +90,6 @@ namespace Player
             MoveConstantly();
         }
 
-        // private void OnDestroy()
-        // {
-        //     KillBody();
-        // }
-        //
-        // private void OnDisable()
-        // {
-        //     KillBody();
-        // }
-
         protected void KillBody()
         {
             killAction(this);
