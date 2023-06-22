@@ -15,7 +15,7 @@ namespace Gate
 
         private bool onceEntered;
 
-        private Dictionary<MultiplyType, char> multiplyCharacter = new Dictionary<MultiplyType, char>()
+        private Dictionary<MultiplyType, char> multiplyCharacter = new()
         {
             { MultiplyType.Addition, '+' },
             { MultiplyType.Multiplication, 'x' }

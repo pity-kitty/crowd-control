@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Services;
 using Spawners;
 using UnityEngine;
@@ -8,25 +9,37 @@ namespace Player
 {
     public abstract class Body : MonoBehaviour
     {
-        private const string RunningParameterName = "IsRunning";
-        private const string CheeringParameterName = "IsCheering";
-
         [SerializeField] private CharacterController characterController;
-        [SerializeField] private Animator bodyAnimator;
+        [SerializeField] private AnimationInstancing animationInstancing;
         [SerializeField] private float moveSpeed = 0.5f;
         [SerializeField] private float distanceCoefficient = 3f;
 
         private readonly Guid id = Guid.NewGuid();
-        private readonly int runningAnimationParameterID = Animator.StringToHash(RunningParameterName);
-        private readonly int cheeringAnimationParameterID = Animator.StringToHash(CheeringParameterName);
         private EventService eventService;
         private Spawner spawner;
         private Action<Body> killAction;
         private float distanceThreshold;
+        private PlayerAnimation animationToApply;
+        private Dictionary<PlayerAnimation, int> animationIndices = new()
+        {
+            { PlayerAnimation.Idle , 2 },
+            { PlayerAnimation.Running , 1 },
+            { PlayerAnimation.Cheering , 0 }
+        };
 
         protected Spawner Spawner => spawner;
         public Guid ID => id;
         public PointPosition PointPosition;
+
+        public PlayerAnimation AnimationToApply
+        {
+            get => animationToApply;
+            set
+            {
+                animationToApply = value;
+                SetAnimation(animationToApply);
+            }
+        }
 
         private void Start()
         {
@@ -36,6 +49,13 @@ namespace Player
         public void InitializeSubscriptions()
         {
             eventService.FightFinished += StopBody;
+            animationInstancing.AnimationPrepared += ApplyAnimationOnStart;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            eventService.FightFinished -= StopBody;
+            animationInstancing.AnimationPrepared -= ApplyAnimationOnStart;
         }
 
         public void Initialize(EventService eventServiceReference, Spawner spawnerReference, Action<Body> onKill)
@@ -61,21 +81,24 @@ namespace Player
             }
         }
 
+        private void ApplyAnimationOnStart()
+        {
+            SetAnimation(animationToApply);
+        }
+
         public void SetIdleAnimation()
         {
-            bodyAnimator.SetBool(runningAnimationParameterID, false);
-            bodyAnimator.SetBool(cheeringAnimationParameterID, false);
+            animationInstancing.PlayAnimation(animationIndices[PlayerAnimation.Idle]);
         }
 
         public void SetRunningAnimation()
         {
-            bodyAnimator.SetBool(runningAnimationParameterID, true);
+            animationInstancing.PlayAnimation(animationIndices[PlayerAnimation.Running]);
         }
 
         public void SetCheeringAnimation()
         {
-            bodyAnimator.SetBool(cheeringAnimationParameterID, true);
-            bodyAnimator.SetBool(runningAnimationParameterID, false);
+            animationInstancing.PlayAnimation(animationIndices[PlayerAnimation.Cheering]);
         }
 
         public void Move(Vector3 position, bool canDie = false)
@@ -100,7 +123,7 @@ namespace Player
         protected void KillBody()
         {
             killAction(this);
-            eventService.FightFinished -= StopBody;
+            UnsubscribeEvents();
         }
 
         public void StopBody()

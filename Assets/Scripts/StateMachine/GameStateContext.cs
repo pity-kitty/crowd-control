@@ -1,3 +1,4 @@
+using System.Collections;
 using Level;
 using Player;
 using Services;
@@ -10,6 +11,8 @@ namespace StateMachine
 {
     public class GameStateContext : MonoBehaviour
     {
+        private const string AnimationTextureFileName = "animationtexture";
+
         [SerializeField] private MainUI mainUI;
         [SerializeField] private PlayerSpawner playerSpawner;
         [SerializeField] private LevelService levelService;
@@ -47,9 +50,11 @@ namespace StateMachine
             EndState = new EndState(this, eventService);
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
+            yield return AnimationManager.GetInstance().LoadAnimationAssetBundle($"{Application.streamingAssetsPath}/{AnimationTextureFileName}");
             currentState = MainMenuState;
+            LevelService.StartLevelService();
             currentState.EnterState();
         }
 

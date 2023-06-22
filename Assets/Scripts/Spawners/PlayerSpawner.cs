@@ -1,17 +1,34 @@
+using System.Collections;
+using System.Linq;
+using DG.Tweening;
 using Gate;
 using Player;
 using Services;
+using UnityEngine;
 using Zenject;
 
 namespace Spawners
 {
     public class PlayerSpawner : Spawner
     {
-        [Inject] private UserDataService userDataService;
+        [SerializeField] private float regroupDelay = 1.5f;
+        
+        private UserDataService userDataService;
+
+        [Inject]
+        private void Construct(UserDataService userDataServiceReference)
+        {
+            userDataService = userDataServiceReference;
+        }
 
         protected override void Start()
         {
             base.Start();
+            EventServiceReference.FightFinished += () =>
+            {
+                ReturnBodies();
+                RegroupBodies(false);
+            };
             EventServiceReference.GateCollected += GateCollected;
         }
 
@@ -34,6 +51,57 @@ namespace Spawners
                     break;
             }
             SpawnBodies(spawnValue, needAnimate);
+        }
+
+        public override void RegroupBodies(bool needWait = true)
+        {
+            if (!CanRegroup) return;
+            StartCoroutine(Reposition(needWait));
+            CanRegroup = false;
+        }
+
+        private IEnumerator Reposition(bool needWait)
+        {
+            if (needWait) yield return new WaitForSeconds(regroupDelay);
+            if (bodies.Count == 0)
+            {
+                CanRegroup = true;
+                yield break;
+            }
+
+            var bodiesList = bodies.Values.ToList();
+            bodiesList.Sort((a, b) => a.PointPosition.Distance.CompareTo(b.PointPosition.Distance));
+            bodiesList.Reverse();
+            freePositions.Sort((a, b) => a.Distance.CompareTo(b.Distance));
+            var bodiesCount = bodiesList.Count;
+            var countToRemove = 0;
+            for (var i = 0; i < freePositions.Count; i++)
+            {
+                if (i == bodiesCount) break;
+                var point = freePositions[i];
+                var body = bodiesList[i];
+                if (point.Distance >= body.PointPosition.Distance)
+                {
+                    
+                    break;
+                }
+                freePositions.Add(body.PointPosition);
+                body.PointPosition = point;
+                body.transform.DOLocalMove(point.Position, moveDuration);
+                countToRemove++;
+            }
+
+            freePositions.RemoveRange(0, countToRemove);
+            yield return null;
+            CanRegroup = true;
+        }
+
+        private void ReturnBodies()
+        {
+            foreach (var body in bodies.Values)
+            {
+                body.transform.DOLocalMove(body.PointPosition.Position, moveDuration);
+            }
         }
 
         protected override void RemoveBodyFromList(Body body)

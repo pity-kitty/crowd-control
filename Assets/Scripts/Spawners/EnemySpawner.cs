@@ -31,6 +31,8 @@ namespace Spawners
             }
         }
 
+        public override void RegroupBodies(bool needWait = true) { }
+
         private void OnTriggerEnter(Collider other)
         {
             if (contacted || other.gameObject.layer != playerLayer) return;

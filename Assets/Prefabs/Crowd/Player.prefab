@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 4675118350003442917}
   - component: {fileID: 2437114369899918803}
   - component: {fileID: 6640601484063307330}
+  - component: {fileID: -1456419695578101089}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -82,7 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 2437114369899918803}
-  bodyAnimator: {fileID: 6640601484063307330}
+  animationInstancing: {fileID: -1456419695578101089}
   moveSpeed: 3
   distanceCoefficient: 2.6
   obstacleLayer: 10
@@ -138,6 +139,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &-1456419695578101089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109172321315190402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a3f6c37da440f4bbc79e130c12aadd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prototype: {fileID: 109172321315190402}
+  playSpeed: 1
+  shadowCastingMode: 1
+  receiveShadow: 0
+  applyRootMotion: 0
+  bonePerVertex: 4
 --- !u!1 &278752737343883120
 GameObject:
   m_ObjectHideFlags: 0
