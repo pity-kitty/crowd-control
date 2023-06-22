@@ -99,7 +99,7 @@ namespace Spawners
             {
                 foreach (var position in spawnPositionsArray[i].Positions)
                 {
-                    freePositions.Add(new PointPosition { Position = position, Distance = i });
+                    freePositions.Add(new PointPosition { Position = position, Distance = i + 1 });
                 }
             }
         }
