@@ -84,7 +84,7 @@ MonoBehaviour:
   characterController: {fileID: 2437114369899918803}
   bodyAnimator: {fileID: 6640601484063307330}
   moveSpeed: 3
-  distanceCoefficient: 2.5
+  distanceCoefficient: 2.6
   obstacleLayer: 10
 --- !u!136 &4675118350003442917
 CapsuleCollider:

@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7adfb9961484f9297fc2b1c342784ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 0.3
+  sensitivity: 0.4
   leftXBoundary: -11
   rightXBoundary: 11
 --- !u!1001 &1733040240879360672

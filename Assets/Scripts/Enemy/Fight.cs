@@ -14,8 +14,7 @@ namespace Enemy
         private EventService eventService;
         private PlayerSpawner playerSpawner;
         private EnemySpawner enemySpawner;
-        private Coroutine playerMoveCoroutine;
-        private Coroutine enemyMoveCoroutine;
+        private Coroutine fightCoroutine;
 
         public void SetReferences(EventService eventService, PlayerSpawner playerSpawner, EnemySpawner enemySpawner)
         {
@@ -27,6 +26,7 @@ namespace Enemy
         public void StartFight()
         {
             eventService.InvokeFightStarted();
+            eventService.FightFinished += OnFightEnd;
             enemySpawner.SetAnimationForAllBodies(PlayerAnimation.Running);
             var playerBodies = playerSpawner.Bodies;
             playerBodies.Sort((a, b) => a.PointPosition.Position.z.CompareTo(b.PointPosition.Position.z));
@@ -38,12 +38,12 @@ namespace Enemy
             var dieLimit = playerBodiesCount - enemyBodiesCount;
             if (dieLimit > 0)
             {
-                StartCoroutine(InitializeFight(playerBodies, enemyBodies));
+                fightCoroutine = StartCoroutine(InitializeFight(playerBodies, enemyBodies));
                 income = enemyBodiesCount;
             }
             else
             {
-                StartCoroutine(InitializeFight(enemyBodies, playerBodies));
+                fightCoroutine = StartCoroutine(InitializeFight(enemyBodies, playerBodies));
                 income = playerBodiesCount;
             }
         }
@@ -67,6 +67,13 @@ namespace Enemy
                 loserIndex++;
                 yield return null;
             }
+            eventService.InvokeMoneyGained(income);
+        }
+
+        private void OnFightEnd()
+        {
+            eventService.FightFinished -= OnFightEnd;
+            StopCoroutine(fightCoroutine);
             eventService.InvokeMoneyGained(income);
         }
     }
