@@ -15,7 +15,7 @@ namespace Spawners
 {
     public abstract class Spawner : MonoBehaviour
     {
-        [SerializeField] private SpawnPositions[] spawnPositionsArray;
+        [SerializeField] protected SpawnPositions[] spawnPositionsArray;
         [SerializeField] private Body bodyPrefab;
         [SerializeField] private CanvasGroup counterCanvasGroup;
         [SerializeField] private TMP_Text crowdCountText;
@@ -96,7 +96,7 @@ namespace Spawners
             }
         }
 
-        protected void SpawnBodies(int spawnCount, bool needAnimate)
+        protected virtual void SpawnBodies(int spawnCount, bool needAnimate)
         {
             amountToSpawn = spawnCount;
             SpawnRoutine(needAnimate);

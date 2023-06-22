@@ -25,6 +25,11 @@ namespace Player
             eventService = eventServiceReference;
         }
 
+        private void Start()
+        {
+            eventService.RadiusRecalculated += SetNewOffset;
+        }
+
         public void EnableControl(bool state)
         {
             if (state)
@@ -76,6 +81,11 @@ namespace Player
         private void SetNewOffset(float newOffset)
         {
             offset = newOffset;
+        }
+
+        private void OnDestroy()
+        {
+            eventService.RadiusRecalculated -= SetNewOffset;
         }
     }
 }

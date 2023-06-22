@@ -13,6 +13,7 @@ namespace Services
         private Action tryAgainPressed;
         private Action nextLevelPressed;
         private Action<int> moneyGained;
+        private Action<float> radiusRecalculated;
 
         public event Action<MultiplyType, int, bool> GateCollected
         {
@@ -61,6 +62,12 @@ namespace Services
             add => moneyGained += value;
             remove => moneyGained -= value;
         }
+        
+        public event Action<float> RadiusRecalculated
+        {
+            add => radiusRecalculated += value;
+            remove => radiusRecalculated -= value;
+        }
 
         public void InvokeGateCollectedEvent(MultiplyType multiplyType, int gateValue)
         {
@@ -100,6 +107,11 @@ namespace Services
         public void InvokeMoneyGained(int money)
         {
             moneyGained?.Invoke(money);
+        }
+
+        public void InvokeRadiusRecalculated(float maxRadius)
+        {
+            radiusRecalculated?.Invoke(maxRadius);
         }
     }
 }

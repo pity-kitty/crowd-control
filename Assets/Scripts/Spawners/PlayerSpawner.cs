@@ -38,6 +38,26 @@ namespace Spawners
             SpawnBodies(userDataService.CurrentUser.StartCrowdCount, false);
         }
 
+        protected override void SpawnBodies(int spawnCount, bool needAnimate)
+        {
+            base.SpawnBodies(spawnCount, needAnimate);
+            EventServiceReference.InvokeRadiusRecalculated(GetCirclesCount(spawnCount));
+        }
+        
+        private int GetCirclesCount(int spawnCount = 0)
+        {
+            var count = BodiesCount + spawnCount;
+            if (count <= 1) return 0;
+            var overallLength = 0;
+            for (var i = 0; i < spawnPositionsArray.Length; i++)
+            {
+                overallLength += spawnPositionsArray[i].Positions.Length;
+                if (count < overallLength) return ++i;
+            }
+
+            return spawnPositionsArray.Length;
+        }
+
         private void GateCollected(MultiplyType multiplyType, int gateValue, bool needAnimate)
         {
             var spawnValue = 0;
@@ -92,6 +112,7 @@ namespace Spawners
             }
 
             freePositions.RemoveRange(0, countToRemove);
+            EventServiceReference.InvokeRadiusRecalculated(GetCirclesCount());
             yield return null;
             CanRegroup = true;
         }
